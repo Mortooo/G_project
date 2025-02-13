@@ -17,6 +17,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -29,7 +31,7 @@ import javafx.stage.Stage;
  * @author afrotech
  */
 public class LoginFormController implements Initializable {
-    
+
     private Connection con;
     private ResultSet resultSet;
     private PreparedStatement pre;
@@ -50,28 +52,33 @@ public class LoginFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     @FXML
     private void press(ActionEvent event) throws SQLException, IOException {
-         if (getUser().getUserName().isEmpty() || getUser().getPassword().isEmpty()) {
+        if (getUser().getUserName().isEmpty() || getUser().getPassword().isEmpty()) {
+
             txt_result.setText("الرجاء ادخال اسم المستخدم وكلمة المرور");
+
         } else {
 
             if (getUser().isExist()) {
-                
+
                 btn_logIn.getScene().getWindow().hide();
                 
-                System.out.println("valid user name and password");
-//                
-//                Stage stage=new Stage();
-//                Parent parent = FXMLLoader.load(getClass().getResource("MainFXML.fxml"));
-//                Scene scene = new Scene(parent);
-//                stage.setScene(scene);
-//                stage.show();
+                Stage stage=new Stage();
+                Parent parent = FXMLLoader.load(getClass().getResource("MainForm.fxml"));
+                Scene scene = new Scene(parent);
+                stage.setScene(scene);
+                stage.show();
 
             } else {
-                txt_result.setText("اسم المستخدم او كلمة المرور غير صحيحة");
+                Alert alertError = new Alert(AlertType.ERROR);
+                alertError.setTitle("خطأ");
+                alertError.setHeaderText("خطأ");
+                alertError.setContentText("خطأ في اسم المستخدم أو كلمة المرور");
+                alertError.showAndWait();
+//                txt_result.setText("اسم المستخدم او كلمة المرور غير صحيحة");
 
             }
         }
@@ -81,8 +88,8 @@ public class LoginFormController implements Initializable {
     private void close(ActionEvent event) {
         System.exit(0);
     }
-    
-      private Users getUser() {
+
+    private Users getUser() {
 
         Users user = new Users();
 
