@@ -1,0 +1,140 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+.mainFxmlClass {
+
+}
+.left-form{
+   -fx-background-color:linear-gradient(to top right,#3782cd ,#154775);
+   -fx-border-color:#000;
+   -fx-border-width:.4px 0px .4px .4px;
+}
+
+.right-form{
+   -fx-background-color:#fff; 
+   -fx-border-color:#000;
+   -fx-border-width:.4px 4px .4px .0px;
+}
+
+.nav-btn{
+    /*-fx-background-color:#79c7f8;*/
+    -fx-background-color: transparent;
+    -fx-background-radius:8px;
+    -fx-border-radius:8px;
+    -fx-cursor:hand;
+     -fx-text-fill: #ffffff;
+
+
+}
+.nav-btn:hover{
+     -fx-background-color: lightslategrey;
+}
+
+.shadow{
+    -fx-effect:dropshadow(three-pass-box, rgb(0,0,0,0.4), 5,0,0,0);
+}
+
+.white-bg{
+    
+    -fx-background-color:#fff;
+    -fx-background-radius:8px;
+}
+
+.card1{
+   -fx-background-color:linear-gradient(to top right,#2c801d ,#3ab522);
+   -fx-background-radius:8px;
+}
+
+.card2{
+   -fx-background-color:linear-gradient(to top right,#c43a1a ,#c67218);
+   -fx-background-radius:8px;
+}
+
+.card3{
+   -fx-background-color:linear-gradient(to top right,#0d7983 ,#1abecd);
+   -fx-background-radius:8px;
+}
+
+.add-btn{
+    -fx-background-color:#1d3a97;
+    -fx-background-radius:8px;
+    -fx-text-fill:#fff;
+    -fx-cursor:hand;
+}
+.prech-btn{
+    -fx-background-color:#06bae8;
+    -fx-background-radius:8px;
+    -fx-text-fill:#fff;
+    -fx-cursor:hand;
+}
+
+.add-btn:hover{
+    -fx-background-color:#3864e8;
+
+}
+.prech-btn:hover{
+    -fx-background-color:#1a9ebf;
+
+}
+
+.delete-btn{
+    -fx-background-color:#ae1616;
+    -fx-background-radius:8px;
+    -fx-text-fill:#fff;
+    -fx-cursor:hand;
+}
+
+.delete-btn:hover{
+    -fx-background-color:#dd2c2c;
+
+}
+
+.update-btn{
+    -fx-background-color:#209e28;
+    -fx-background-radius:8px;
+    -fx-text-fill:#fff;
+    -fx-cursor:hand;
+}
+
+.update-btn:hover{
+    -fx-background-color:#20da2a;
+
+}
+.clear-btn{
+    -fx-background-color:#a49d18;
+    -fx-background-radius:8px;
+    -fx-text-fill:#fff;
+    -fx-cursor:hand;
+}
+
+.clear-btn:hover{
+    -fx-background-color:#ebd918;
+
+}
+
+.table-veiw {
+    -fx-background-color:transparent;
+    -fx-border-color:linear-gradient(to top right, #9a360b ,#79503f);
+    -fx-border-width:2px;
+    -fx-border-radius:5px;
+
+}
+.table-veiw .table-column{
+    
+    -fx-alignment:CENTER;
+}
+.table-veiw .column-header-background{
+     -fx-background-color:#9a360b;
+     -fx-background-insets: 0 0 0 0;
+}
+.table-veiw .column-header, .filter{
+     -fx-background-color:transparent;
+     -fx-size:50px;
+
+}
+.table-veiw .column-header .label{
+    -fx-text-fill:#fff;
+    -fx-font-family:"KacstLetter";
+    -fx-font-size:20px;
+}

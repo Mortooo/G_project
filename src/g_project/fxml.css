@@ -1,0 +1,168 @@
+
+/*
+ * Improved Stylesheet with modern design.
+ */
+
+
+
+/* Main container */
+.mainFxmlClass {
+    -fx-background-color: linear-gradient(to top right, #2a205c, #9189b5);
+}
+
+/* Left form section */
+.left-form {
+    /*-fx-background-color: linear-gradient(to top right, #2a205c, #9189b5);*/
+    -fx-background-color: #003366;
+    -fx-border-color: #000000;
+    -fx-border-width: 0.4px 0px 0.4px 0.4px;
+}
+
+/* Right form section */
+.right-form {
+    -fx-background-color: #000000;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 0.4px 4px 0.4px 0px;
+}
+
+/* Text fields */
+.textfield {
+    -fx-background-color: linear-gradient(to bottom, #eee, #ddd);
+    -fx-background-radius: 8px;
+    -fx-border-color: #000000;
+    -fx-border-width: 0px 0px 0.8px 0px;
+    -fx-font-family: "Tahoma";
+    -fx-font-size: 13px;
+    -fx-border-radius: 8px;
+    -fx-prompt-text-fill: #666; /* Placeholder text color */
+}
+
+.textfield:focused {
+    -fx-background-color: #ffffff;
+    -fx-border-width: 0px 0px 1.8px 0px;
+    -fx-border-color: #ff9000; /* Highlight border on focus */
+}
+
+/* Login button */
+.login-btn {
+    -fx-background-color: #3399cc;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+    -fx-text-fill: #ffffff;
+    /*-fx-font-family: "KacstLetter";*/
+    /*-fx-font-size: 18px;*/
+    -fx-border-color: #FFFFFF;
+    -fx-border-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 2); /* Add shadow for depth */
+}
+
+.login-btn:hover {
+        -fx-background-color:  #ffffcc;
+
+       -fx-border-color: #669999;
+
+    -fx-text-fill: #669999;  
+}
+
+/* Close button */
+.close {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+.close:hover {
+    -fx-background-color: #dd2f4f; /* Red hover effect */
+}
+
+/* Hyperlink */
+.hyperlink {
+    -fx-border-color: transparent;
+    -fx-font-family: "KacstLetter";
+    -fx-font-size: 14px;
+    -fx-text-fill: #369eda; /* Blue link color */
+}
+
+.hyperlink:hover {
+    -fx-text-fill: #ff9000; /* Change to accent color on hover */
+}
+
+/*
+
+ * Empty Stylesheet file.
+ 
+
+.mainFxmlClass {
+    -fx-background-color: #000099;
+    -fx-background-color:linear-gradient(to bottom, #000099 ,#79503f);
+       -fx-background-color:linear-gradient(to top right,#2a205c ,#9189b5);
+
+
+}
+
+.left-form{
+   -fx-background-color:linear-gradient(to top right,#2a205c ,#9189b5);
+   -fx-background-color:#000099;
+   -fx-background-color:#2a205c;
+   -fx-border-color:#000;
+   -fx-border-width:.4px 0px .4px .4px;
+}
+
+.right-form{
+   -fx-background-color:#000; 
+   -fx-border-color:#fff;
+   -fx-border-width:.4px 4px .4px .0px;
+}
+
+.textfield{
+    -fx-background-color:linear-gradient(to bottom, #eee, #ddd);
+    -fx-background-radius:8px;
+    -fx-border-color:#000;
+    -fx-border-width: 0px 0px .8px 0px;
+    -fx-font-family:"Tahoma";
+    -fx-font-size:13px;
+    -fx-border-radius:8px;
+}
+
+.textfield:focused{
+     -fx-background-color:#efefef;
+     -fx-border-width:0px 0px 1.8px 0px;
+}
+
+.login-btn{
+          -fx-background-color:#5c548c; 
+
+     -fx-background-color:linear-gradient(to bottom, #9a360b,#79503f);
+     -fx-background-radius:8px;
+     -fx-cursor:hand;
+     -fx-text-fill:#fff;
+     -fx-font-family:"KacstLetter";
+     -fx-font-size:18px;
+	 -fx-border-color:#fff;
+     -fx-border-radius:8px;
+}
+.login-btn:hover{
+     -fx-background-color:linear-gradient(to bottom, #9a580b,#80503f); 
+          -fx-background-color:#2a205c;
+
+}
+
+.close{
+     -fx-background-color:transparent;
+     -fx-cursor:hand;
+}
+.close:hover{
+    -fx-background-color:#dd2f4f;
+}
+
+.hyperlink{
+    -fx-border-color:transparent;
+    -fx-font-family:"KacstLetter";
+    -fx-font-size:14px;
+    
+    -fx-text-fill:#369eda;
+}
+
+.hyperlink:hover{
+    -fx-text-fill:#000;
+    
+}*/
