@@ -15,6 +15,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -45,6 +49,32 @@ public class MainFormController implements Initializable {
     private Button update_volunteer_btn;
     @FXML
     private Button delete_volunteer_btn;
+    @FXML
+    private TextField v_search_txtf;
+    @FXML
+    private Button v_search_btn;
+    @FXML
+    private ComboBox<?> v_chombox;
+    @FXML
+    private TableView<?> volunteer_table;
+    @FXML
+    private TableColumn<?, ?> v_col_notes;
+    @FXML
+    private TableColumn<?, ?> v_col_class;
+    @FXML
+    private TableColumn<?, ?> v_col_prrof_identitiy;
+    @FXML
+    private TableColumn<?, ?> v_account_name;
+    @FXML
+    private TableColumn<?, ?> v_col_account_number;
+    @FXML
+    private TableColumn<?, ?> v_col_phone;
+    @FXML
+    private TableColumn<?, ?> v_col_adress;
+    @FXML
+    private TableColumn<?, ?> v_col_name;
+    @FXML
+    private TableColumn<?, ?> v_col_id;
 
     /**
      * Initializes the controller class.
@@ -69,20 +99,17 @@ public class MainFormController implements Initializable {
             stage.show();
 
         } else if (event.getSource().equals(dashboard_btn)) {
-            
+
             hideCurrentAPane();
             dashboard.setVisible(true);
 
         } else if (event.getSource().equals(vlounteers_btn)) {
-            
+
             hideCurrentAPane();
             volunteers_pan.setVisible(true);
-            
-        }else if(event.getSource().equals(add_volunteer_btn)){
-            
-            hideCurrentAPane();
-            add_voluntee_pan.setVisible(true);
-            
+
+        } else {
+
         }
 
     }
@@ -93,6 +120,17 @@ public class MainFormController implements Initializable {
             if (child instanceof AnchorPane) {
                 child.setVisible(false);
             }
+
+        }
+    }
+
+    @FXML
+    private void v_handelBtn(ActionEvent event) {
+        
+        if (event.getSource().equals(add_volunteer_btn)) {
+
+            hideCurrentAPane();
+            add_voluntee_pan.setVisible(true);
 
         }
     }

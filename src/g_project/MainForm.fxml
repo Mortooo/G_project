@@ -24,20 +24,20 @@
                <children>
                   <AnchorPane fx:id="volunteers_pan" layoutX="115.0" layoutY="44.0" prefHeight="614.0" prefWidth="750.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <TextField layoutX="245.0" layoutY="22.0" prefHeight="40.0" prefWidth="492.0" />
-                        <Button layoutX="33.0" layoutY="25.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="70.0" text="بحث" />
-                        <ComboBox layoutX="129.0" layoutY="25.0" prefHeight="35.0" prefWidth="97.0" />
-                        <TableView layoutX="9.0" layoutY="81.0" prefHeight="468.0" prefWidth="732.0">
+                        <TextField fx:id="v_search_txtf" layoutX="245.0" layoutY="22.0" prefHeight="40.0" prefWidth="492.0" />
+                        <Button fx:id="v_search_btn" layoutX="33.0" layoutY="25.0" mnemonicParsing="false" onAction="#v_handelBtn" prefHeight="35.0" prefWidth="70.0" text="بحث" />
+                        <ComboBox fx:id="v_chombox" layoutX="129.0" layoutY="25.0" prefHeight="35.0" prefWidth="97.0" />
+                        <TableView fx:id="volunteer_table" layoutX="9.0" layoutY="81.0" prefHeight="468.0" prefWidth="732.0">
                           <columns>
-                            <TableColumn prefWidth="105.0" text="ملاحظات" />
-                            <TableColumn prefWidth="72.0" text="الفئة" />
-                              <TableColumn prefWidth="48.0" text="الاثبات" />
-                              <TableColumn prefWidth="106.0" text="باسم" />
-                              <TableColumn prefWidth="68.0" text="رقم الحساب" />
-                              <TableColumn prefWidth="84.0" text="الهاتف" />
-                              <TableColumn prefWidth="68.0" text="العنوان" />
-                              <TableColumn prefWidth="140.0" text="الاسم" />
-                              <TableColumn prefWidth="38.0" text="الرقم" />
+                            <TableColumn fx:id="v_col_notes" prefWidth="105.0" text="ملاحظات" />
+                            <TableColumn fx:id="v_col_class" prefWidth="72.0" text="الفئة" />
+                              <TableColumn fx:id="v_col_prrof_identitiy" prefWidth="48.0" text="الاثبات" />
+                              <TableColumn fx:id="v_account_name" prefWidth="106.0" text="باسم" />
+                              <TableColumn fx:id="v_col_account_number" prefWidth="68.0" text="رقم الحساب" />
+                              <TableColumn fx:id="v_col_phone" prefWidth="84.0" text="الهاتف" />
+                              <TableColumn fx:id="v_col_adress" prefWidth="68.0" text="العنوان" />
+                              <TableColumn fx:id="v_col_name" prefWidth="140.0" text="الاسم" />
+                              <TableColumn fx:id="v_col_id" prefWidth="38.0" text="الرقم" />
                           </columns>
                         </TableView>
                         <Button fx:id="add_volunteer_btn" layoutX="428.0" layoutY="560.0" mnemonicParsing="false" onAction="#handel_btns" prefHeight="40.0" prefWidth="131.0" styleClass="login-btn" stylesheets="@fxml.css" text="اضافة" textFill="WHITE">
