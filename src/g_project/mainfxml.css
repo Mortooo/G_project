@@ -7,8 +7,10 @@
 }
 .left-form{
    -fx-background-color:linear-gradient(to top right,#3782cd ,#154775);
-   -fx-border-color:#000;
-   -fx-border-width:.4px 0px .4px .4px;
+   /*-fx-border-color:#000;*/
+   /*-fx-border-width:.4px 0px .4px .4px;*/
+       -fx-background-radius:8px;
+
 }
 
 .right-form{
@@ -42,7 +44,7 @@
 }
 
 .card1{
-   -fx-background-color:linear-gradient(to top right,#2c801d ,#3ab522);
+   -fx-background-color:#003366;
    -fx-background-radius:8px;
 }
 
