@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public abstract class Database {
-
+//hello 
     public Connection con;
     public ResultSet resultSet;
     public PreparedStatement pre;

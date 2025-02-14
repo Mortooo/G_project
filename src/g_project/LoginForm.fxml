@@ -36,8 +36,8 @@
                <font>
                   <Font name="Arial Bold" size="24.0" />
                </font></Text>
-            <TextField fx:id="txtf_user_name" layoutX="85.0" layoutY="228.0" prefHeight="37.0" prefWidth="233.0" promptText="اسم السمتخدم" styleClass="textfield" stylesheets="@fxml.css" />
-            <PasswordField fx:id="txtf_password" layoutX="85.0" layoutY="278.0" prefHeight="37.0" prefWidth="233.0" promptText="كلمة المرور" styleClass="textfield" stylesheets="@fxml.css" />
+            <TextField fx:id="txtf_user_name" layoutX="85.0" layoutY="228.0" prefHeight="37.0" prefWidth="233.0" promptText="اسم السمتخدم" styleClass="textfield" stylesheets="@fxml.css" text="admin" />
+            <PasswordField fx:id="txtf_password" layoutX="85.0" layoutY="278.0" prefHeight="37.0" prefWidth="233.0" promptText="كلمة المرور" styleClass="textfield" stylesheets="@fxml.css" text="admin" />
             <Button fx:id="btn_logIn" layoutX="134.0" layoutY="345.0" mnemonicParsing="false" onAction="#press" prefHeight="41.0" prefWidth="135.0" styleClass="login-btn" stylesheets="@fxml.css" text="تسجيل دخول">
                
             </Button>

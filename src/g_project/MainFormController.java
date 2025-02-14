@@ -22,8 +22,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -83,6 +85,32 @@ public class MainFormController implements Initializable {
     Volunteers volunteers=new Volunteers();
     @FXML
     private TableColumn<?, ?> v_col_proof_identitiy;
+    @FXML
+    private Button v_newV_btn;
+    @FXML
+    private Button v_saveU_btn;
+    @FXML
+    private Button v_clear;
+    @FXML
+    private TextField v_id_txtf;
+    @FXML
+    private TextField v_name_txtf;
+    @FXML
+    private TextArea v_note_txtf;
+    @FXML
+    private TextField v_address_txtf;
+    @FXML
+    private TextField v_phone_txtf;
+    @FXML
+    private TextField v_account_number_txtf;
+    @FXML
+    private TextField v_account_name_txtf;
+    @FXML
+    private TextField v_class_txtf;
+    @FXML
+    private Button v_selectFile_btn;
+    @FXML
+    private Label v_path_lable;
     /**
      * Initializes the controller class.
      */
@@ -143,7 +171,7 @@ public class MainFormController implements Initializable {
         }
 
     }
-
+    
     public void hideCurrentAPane() {//hide the current anchor pane 
 
         for (Node child : ((javafx.scene.Parent) pane_view).getChildrenUnmodifiable()) {
@@ -162,6 +190,20 @@ public class MainFormController implements Initializable {
             hideCurrentAPane();
             add_voluntee_pan.setVisible(true);
 
+        }else if(event.getSource().equals(v_clear)){
+            
+            v_account_name_txtf.setText("");
+            v_account_number_txtf.setText("");
+            v_address_txtf.setText("");
+            v_phone_txtf.setText("");
+            v_class_txtf.setText("");
+            v_note_txtf.setText("");
+            v_path_lable.setText("");
+            v_name_txtf.setText("");
+            
+            
+        }else{
+            
         }
     }
 
