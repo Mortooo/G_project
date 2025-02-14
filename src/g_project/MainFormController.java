@@ -4,8 +4,12 @@
  */
 package g_project;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -28,7 +32,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
@@ -82,7 +88,7 @@ public class MainFormController implements Initializable {
     private TableColumn<?, ?> v_col_name;
     @FXML
     private TableColumn<?, ?> v_col_id;
-    Volunteers volunteers=new Volunteers();
+    Volunteers volunteers = new Volunteers();
     @FXML
     private TableColumn<?, ?> v_col_proof_identitiy;
     @FXML
@@ -111,37 +117,37 @@ public class MainFormController implements Initializable {
     private Button v_selectFile_btn;
     @FXML
     private Label v_path_lable;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    
-         try {
+
+        try {
             v_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
             v_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
             v_col_adress.setCellValueFactory(new PropertyValueFactory<>("addrees"));
             v_col_phone.setCellValueFactory(new PropertyValueFactory<>("phone"));
-            v_account_name.setCellValueFactory(new PropertyValueFactory<>("account_name")); 
+            v_account_name.setCellValueFactory(new PropertyValueFactory<>("account_name"));
             v_col_account_number.setCellValueFactory(new PropertyValueFactory<>("account_number"));
-           v_col_proof_identitiy.setCellValueFactory(new PropertyValueFactory<>("proof_identity"));
+            v_col_proof_identitiy.setCellValueFactory(new PropertyValueFactory<>("proof_identity"));
             v_col_class.setCellValueFactory(new PropertyValueFactory<>("class"));
             v_col_notes.setCellValueFactory(new PropertyValueFactory<>("note"));
 
             showdata();
         } catch (SQLException ex) {
-             System.out.println(ex.getMessage());
+            System.out.println(ex.getMessage());
         }
-        
-        
-        
+
     }
 
-      public  void showdata() throws SQLException {
+    public void showdata() throws SQLException {
         ObservableList<Volunteers> list = FXCollections.observableArrayList(volunteers.getAll());
         volunteer_table.setItems(list);
 
     }
+
     @FXML
     private void handel_btns(ActionEvent event) throws IOException {
 
@@ -171,7 +177,7 @@ public class MainFormController implements Initializable {
         }
 
     }
-    
+
     public void hideCurrentAPane() {//hide the current anchor pane 
 
         for (Node child : ((javafx.scene.Parent) pane_view).getChildrenUnmodifiable()) {
@@ -183,15 +189,15 @@ public class MainFormController implements Initializable {
     }
 
     @FXML
-    private void v_handelBtn(ActionEvent event) {
-        
+    private void v_handelBtn(ActionEvent event) throws IOException, SQLException {
+
         if (event.getSource().equals(add_volunteer_btn)) {
 
             hideCurrentAPane();
             add_voluntee_pan.setVisible(true);
 
-        }else if(event.getSource().equals(v_clear)){
-            
+        } else if (event.getSource().equals(v_clear)) {
+
             v_account_name_txtf.setText("");
             v_account_number_txtf.setText("");
             v_address_txtf.setText("");
@@ -200,11 +206,82 @@ public class MainFormController implements Initializable {
             v_note_txtf.setText("");
             v_path_lable.setText("");
             v_name_txtf.setText("");
+
+        } else if (event.getSource().equals(v_selectFile_btn)) {
+            
+            FileChooser chooser = new FileChooser();
+
+            File selectedFile = chooser.showOpenDialog(null);
+
+            v_path_lable.setText(selectedFile.getPath());
+
+        } else if (event.getSource().equals(v_saveU_btn)) {
+            
+            Volunteers volunteer=getUserInput();
             
             
-        }else{
-            
+            if(volunteer!=null)// if the user fill the form
+            if(volunteer.getId()==null){// if the id_txtf is empty that mean the user want to add new voulnteer
+                
+//                System.out.println("add new volunteer");
+                volunteer.add();
+            }else{// updare vounteer
+                
+            }
+
+        } else {
+
         }
+    }
+
+    @FXML
+    private void openFile(MouseEvent event) throws IOException {
+
+
+        try {
+        File file = new File(v_path_lable.getText());
+
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().open(file); // Open the file with the default application
+            } else {
+                System.err.println("Desktop is not supported on this platform.");
+            }
+        } catch (Exception e) {
+            
+                            new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
+
+        }
+
+
+    }
+    
+    private Volunteers getUserInput() throws IOException {
+
+        Volunteers volunteer = null;
+
+        if ( v_name_txtf.getText().equals("") || v_address_txtf.getText().equals("") ||v_phone_txtf.getText().equals("")||
+                v_account_name_txtf.getText().equals("")||v_account_number_txtf.getText().equals("")||v_path_lable.getText().equals("مسار الملف")||v_class_txtf.getText().equals("")||v_note_txtf.getText().equals("")) {
+            new Alert(Alert.AlertType.ERROR, "الرجاء ادخال البيانات").showAndWait();
+
+        } else {
+            volunteer = new Volunteers();
+//            volunteer.setId(Integer.parseInt(v_id_txtf.getText()));
+            volunteer.setName(v_name_txtf.getText());
+            volunteer.setAddrees(v_address_txtf.getText());
+            volunteer.setPhone(v_phone_txtf.getText());
+            volunteer.setAccount_name(v_account_name_txtf.getText());
+            volunteer.setAccount_number(v_account_number_txtf.getText());
+            volunteer.setProof_identity(Files.readAllBytes(Paths.get(v_path_lable.getText())));
+            volunteer.setCalss(v_class_txtf.getText());
+            volunteer.setNote(v_note_txtf.getText());
+           
+            
+           
+
+        }
+
+        return volunteer;
+
     }
 
 }

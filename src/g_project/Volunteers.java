@@ -8,17 +8,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  *
  * @author Mortooo.x
  */
-
 public class Volunteers extends Database {
 
- 
     private Integer id;
- 
+
     private String name;
 
     private String addrees;
@@ -150,15 +147,10 @@ public class Volunteers extends Database {
     public String toString() {
         return "g_project.Volunteers[ id=" + id + " ]";
     }
-    
-    
-    
-    
-    
-    
-     public List<Volunteers> getAll() throws SQLException {
 
-        String sql =  "SELECT * FROM `volunteers` ;" ;
+    public List<Volunteers> getAll() throws SQLException {
+
+        String sql = "SELECT * FROM `volunteers` ;";
 
         List<Volunteers> list = new ArrayList<Volunteers>();
 
@@ -177,7 +169,6 @@ public class Volunteers extends Database {
                     resultSet.getBytes(7),
                     resultSet.getString(8),
                     resultSet.getString(9)
-                  
             );
 
             list.add(volunteer);
@@ -188,6 +179,60 @@ public class Volunteers extends Database {
         con.close();
 
         return list;
+    }
+
+    public void add() throws SQLException {
+        con = getConnection();
+        pre = con.prepareStatement("INSERT INTO `volunteers`(`name`, `addrees`, `phone`, `account_name`, `account_number`, `proof_identity`, `calss`, `note`) VALUES (?,?,?,?,?,?,?,?)");
+
+        pre.setString(1, name);
+        pre.setString(2, addrees);
+        pre.setString(3, phone);
+        pre.setString(4, account_name);
+        pre.setString(5, account_number);
+        pre.setBytes(6, proof_identity);
+        pre.setString(7, calss);
+        pre.setString(8, note);
+
+        pre.executeUpdate();
+
+        pre.close();
+        con.close();
+
+    }
+
+    public void remove() throws SQLException {
+        con = getConnection();
+
+        pre = con.prepareStatement("DELETE FROM `volunteers` WHERE id=?");
+
+        pre.setInt(1, id);
+        pre.executeUpdate();
+
+        pre.close();
+        con.close();
+
+    }
+
+    public void update() throws SQLException {
+        con = getConnection();
+        pre = con.prepareStatement("UPDATE `volunteers` SET `name`=?,`addrees`=?,`phone`=?,`account_name`=?,`account_number`=?,`proof_identity`=?,`calss`=?,`note`=? WHERE id=?;");
+
+        pre.setString(1, name);
+        pre.setString(2, addrees);
+        pre.setString(3, phone);
+        pre.setString(4, account_name);
+        pre.setString(5, account_number);
+        pre.setBytes(6, proof_identity);
+        pre.setString(7, calss);
+        pre.setString(8, note);
+        pre.setInt(9, id);
+
+        pre.executeUpdate();
+
+        pre.close();
+        con.close();
+
     }
 
 }
