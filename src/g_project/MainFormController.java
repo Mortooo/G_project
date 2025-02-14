@@ -6,7 +6,12 @@ package g_project;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,11 +19,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -56,13 +63,11 @@ public class MainFormController implements Initializable {
     @FXML
     private ComboBox<?> v_chombox;
     @FXML
-    private TableView<?> volunteer_table;
+    private TableView<Volunteers> volunteer_table;
     @FXML
     private TableColumn<?, ?> v_col_notes;
     @FXML
     private TableColumn<?, ?> v_col_class;
-    @FXML
-    private TableColumn<?, ?> v_col_prrof_identitiy;
     @FXML
     private TableColumn<?, ?> v_account_name;
     @FXML
@@ -75,15 +80,40 @@ public class MainFormController implements Initializable {
     private TableColumn<?, ?> v_col_name;
     @FXML
     private TableColumn<?, ?> v_col_id;
-
+    Volunteers volunteers=new Volunteers();
+    @FXML
+    private TableColumn<?, ?> v_col_proof_identitiy;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+    
+         try {
+            v_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+            v_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+            v_col_adress.setCellValueFactory(new PropertyValueFactory<>("addrees"));
+            v_col_phone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+            v_account_name.setCellValueFactory(new PropertyValueFactory<>("account_name")); 
+            v_col_account_number.setCellValueFactory(new PropertyValueFactory<>("account_number"));
+           v_col_proof_identitiy.setCellValueFactory(new PropertyValueFactory<>("proof_identity"));
+            v_col_class.setCellValueFactory(new PropertyValueFactory<>("class"));
+            v_col_notes.setCellValueFactory(new PropertyValueFactory<>("note"));
+
+            showdata();
+        } catch (SQLException ex) {
+             System.out.println(ex.getMessage());
+        }
+        
+        
+        
     }
 
+      public  void showdata() throws SQLException {
+        ObservableList<Volunteers> list = FXCollections.observableArrayList(volunteers.getAll());
+        volunteer_table.setItems(list);
+
+    }
     @FXML
     private void handel_btns(ActionEvent event) throws IOException {
 

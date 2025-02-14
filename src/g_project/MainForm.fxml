@@ -31,7 +31,7 @@
                           <columns>
                             <TableColumn fx:id="v_col_notes" prefWidth="105.0" text="ملاحظات" />
                             <TableColumn fx:id="v_col_class" prefWidth="72.0" text="الفئة" />
-                              <TableColumn fx:id="v_col_prrof_identitiy" prefWidth="48.0" text="الاثبات" />
+                              <TableColumn fx:id="v_col_proof_identitiy" prefWidth="48.0" text="الاثبات" />
                               <TableColumn fx:id="v_account_name" prefWidth="106.0" text="باسم" />
                               <TableColumn fx:id="v_col_account_number" prefWidth="68.0" text="رقم الحساب" />
                               <TableColumn fx:id="v_col_phone" prefWidth="84.0" text="الهاتف" />

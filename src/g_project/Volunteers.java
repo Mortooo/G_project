@@ -4,13 +4,17 @@
  */
 package g_project;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  *
  * @author Mortooo.x
  */
 
-public class Volunteers  {
+public class Volunteers extends Database {
 
  
     private Integer id;
@@ -21,11 +25,11 @@ public class Volunteers  {
 
     private String phone;
 
-    private String accountName;
+    private String account_name;
 
-    private String accountNumber;
+    private String account_number;
 
-    private byte[] proofIdentity;
+    private byte[] proof_identity;
 
     private String calss;
 
@@ -38,14 +42,14 @@ public class Volunteers  {
         this.id = id;
     }
 
-    public Volunteers(Integer id, String name, String addrees, String phone, String accountName, String accountNumber, byte[] proofIdentity, String calss, String note) {
+    public Volunteers(Integer id, String name, String addrees, String phone, String account_name, String account_number, byte[] proofIdentity, String calss, String note) {
         this.id = id;
         this.name = name;
         this.addrees = addrees;
         this.phone = phone;
-        this.accountName = accountName;
-        this.accountNumber = accountNumber;
-        this.proofIdentity = proofIdentity;
+        this.account_name = account_name;
+        this.account_number = account_number;
+        this.proof_identity = proofIdentity;
         this.calss = calss;
         this.note = note;
     }
@@ -82,28 +86,28 @@ public class Volunteers  {
         this.phone = phone;
     }
 
-    public String getAccountName() {
-        return accountName;
+    public String getAccount_name() {
+        return account_name;
     }
 
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
+    public void setAccount_name(String accountName) {
+        this.account_name = accountName;
     }
 
-    public String getAccountNumber() {
-        return accountNumber;
+    public String getAccount_number() {
+        return account_number;
     }
 
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
+    public void setAccount_number(String accountNumber) {
+        this.account_number = accountNumber;
     }
 
-    public byte[] getProofIdentity() {
-        return proofIdentity;
+    public byte[] getProof_identity() {
+        return proof_identity;
     }
 
-    public void setProofIdentity(byte[] proofIdentity) {
-        this.proofIdentity = proofIdentity;
+    public void setProof_identity(byte[] proofIdentity) {
+        this.proof_identity = proofIdentity;
     }
 
     public String getCalss() {
@@ -147,4 +151,43 @@ public class Volunteers  {
         return "g_project.Volunteers[ id=" + id + " ]";
     }
     
+    
+    
+    
+    
+    
+     public List<Volunteers> getAll() throws SQLException {
+
+        String sql =  "SELECT * FROM `volunteers` ;" ;
+
+        List<Volunteers> list = new ArrayList<Volunteers>();
+
+        con = getConnection();
+        pre = con.prepareStatement(sql);
+        resultSet = pre.executeQuery();
+
+        while (resultSet.next()) {
+
+            Volunteers volunteer = new Volunteers(resultSet.getInt(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getString(4),
+                    resultSet.getString(5),
+                    resultSet.getString(6),
+                    resultSet.getBytes(7),
+                    resultSet.getString(8),
+                    resultSet.getString(9)
+                  
+            );
+
+            list.add(volunteer);
+        }
+
+        resultSet.close();
+        pre.close();
+        con.close();
+
+        return list;
+    }
+
 }
