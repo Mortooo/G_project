@@ -26,7 +26,7 @@ public class Volunteers extends Database {
 
     private String account_number;
 
-    private byte[] proof_identity;
+    private String proof_identity;
 
     private String calss;
 
@@ -39,7 +39,7 @@ public class Volunteers extends Database {
         this.id = id;
     }
 
-    public Volunteers(Integer id, String name, String addrees, String phone, String account_name, String account_number, byte[] proofIdentity, String calss, String note) {
+    public Volunteers(Integer id, String name, String addrees, String phone, String account_name, String account_number, String proofIdentity, String calss, String note) {
         this.id = id;
         this.name = name;
         this.addrees = addrees;
@@ -99,11 +99,11 @@ public class Volunteers extends Database {
         this.account_number = accountNumber;
     }
 
-    public byte[] getProof_identity() {
+    public String getProof_identity() {
         return proof_identity;
     }
 
-    public void setProof_identity(byte[] proofIdentity) {
+    public void setProof_identity(String proofIdentity) {
         this.proof_identity = proofIdentity;
     }
 
@@ -166,7 +166,7 @@ public class Volunteers extends Database {
                     resultSet.getString(4),
                     resultSet.getString(5),
                     resultSet.getString(6),
-                    resultSet.getBytes(7),
+                    resultSet.getString(7),
                     resultSet.getString(8),
                     resultSet.getString(9)
             );
@@ -190,7 +190,7 @@ public class Volunteers extends Database {
         pre.setString(3, phone);
         pre.setString(4, account_name);
         pre.setString(5, account_number);
-        pre.setBytes(6, proof_identity);
+        pre.setString(6, proof_identity);
         pre.setString(7, calss);
         pre.setString(8, note);
 
@@ -223,7 +223,7 @@ public class Volunteers extends Database {
         pre.setString(3, phone);
         pre.setString(4, account_name);
         pre.setString(5, account_number);
-        pre.setBytes(6, proof_identity);
+        pre.setString(6, proof_identity);
         pre.setString(7, calss);
         pre.setString(8, note);
         pre.setInt(9, id);
