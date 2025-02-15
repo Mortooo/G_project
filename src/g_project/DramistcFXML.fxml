@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="614.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="g_project.DramistcFXMLController">
+<AnchorPane id="AnchorPane" fx:id="add_dramistic_pan" prefHeight="614.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="g_project.DramistcFXMLController">
    <children>
       <Label layoutX="668.0" layoutY="16.0" text="الرقم التعريفي : ">
          <font>
@@ -51,17 +50,17 @@
             <Font name="Serif Bold" size="22.0" />
          </font>
       </Label>
-      <TextField fx:id="v_id_txtf" editable="false" layoutX="119.0" layoutY="45.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="25.0" prefWidth="662.0" />
-      <TextField fx:id="v_name_txtf" layoutX="119.0" layoutY="103.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="25.0" prefWidth="662.0" promptText="الاسم رباعي" />
-      <TextArea fx:id="v_note_txtf" layoutX="121.0" layoutY="420.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="114.0" prefWidth="575.0" />
-      <TextField fx:id="v_address_txtf" layoutX="119.0" layoutY="160.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="25.0" prefWidth="662.0" promptText="عنوان السكن بالكامل" />
-      <TextField fx:id="v_phone_txtf" layoutX="121.0" layoutY="219.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="25.0" prefWidth="662.0" promptText="09XXXXXXXX" />
-      <TextField fx:id="v_account_number_txtf" layoutX="121.0" layoutY="282.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="25.0" prefWidth="662.0" promptText="123XXXXXXXXXXXXX" />
-      <TextField fx:id="v_account_name_txtf" layoutX="119.0" layoutY="339.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="25.0" prefWidth="662.0" promptText="الاسم رباعي" />
-      <Button fx:id="v_selectFile_btn" layoutX="571.0" layoutY="374.0" mnemonicParsing="false" onAction="#v_handelBtn" text="تصفح" />
-      <Label fx:id="v_path_lable" contentDisplay="RIGHT" layoutX="119.0" layoutY="383.0" onMouseClicked="#openFile" prefHeight="17.0" prefWidth="432.0" text="مسار الملف" />
-      <Button fx:id="v_saveU_btn" layoutX="243.0" layoutY="563.0" mnemonicParsing="false" onAction="#v_handelBtn" prefHeight="35.0" prefWidth="109.0" styleClass="update-btn" stylesheets="@mainfxml.css" text="حفظ" />
-      <Button fx:id="v_clear" layoutX="119.0" layoutY="563.0" mnemonicParsing="false" onAction="#v_handelBtn" prefHeight="35.0" prefWidth="109.0" styleClass="clear-btn" stylesheets="@mainfxml.css" text="افراغ الخانات" />
+      <TextField fx:id="d_id_txtf" editable="false" layoutX="119.0" layoutY="45.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="25.0" prefWidth="662.0" />
+      <TextField fx:id="d_name_txtf" layoutX="119.0" layoutY="103.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="25.0" prefWidth="662.0" promptText="الاسم رباعي" />
+      <TextArea fx:id="d_note_txtf" layoutX="121.0" layoutY="420.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="114.0" prefWidth="575.0" />
+      <TextField fx:id="d_address_txtf" layoutX="119.0" layoutY="160.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="25.0" prefWidth="662.0" promptText="عنوان السكن بالكامل" />
+      <TextField fx:id="d_phone_txtf" layoutX="121.0" layoutY="219.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="25.0" prefWidth="662.0" promptText="09XXXXXXXX" />
+      <TextField fx:id="d_account_number_txtf" layoutX="121.0" layoutY="282.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="25.0" prefWidth="662.0" promptText="123XXXXXXXXXXXXX" />
+      <TextField fx:id="d_account_name_txtf" layoutX="119.0" layoutY="339.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="25.0" prefWidth="662.0" promptText="الاسم رباعي" />
+      <Button fx:id="d_selectFile_btn" layoutX="571.0" layoutY="374.0" mnemonicParsing="false" onAction="#v_handelBtn" text="تصفح" />
+      <Label fx:id="d_path_lable" contentDisplay="RIGHT" layoutX="119.0" layoutY="383.0" onMouseClicked="#openFile" prefHeight="17.0" prefWidth="432.0" text="مسار الملف" />
+      <Button fx:id="d_saveU_btn" layoutX="243.0" layoutY="563.0" mnemonicParsing="false" onAction="#v_handelBtn" prefHeight="35.0" prefWidth="109.0" styleClass="update-btn" stylesheets="@mainfxml.css" text="حفظ" />
+      <Button fx:id="d_clear" layoutX="119.0" layoutY="563.0" mnemonicParsing="false" onAction="#v_handelBtn" prefHeight="35.0" prefWidth="109.0" styleClass="clear-btn" stylesheets="@mainfxml.css" text="افراغ الخانات" />
       <Separator layoutY="546.0" prefHeight="7.0" prefWidth="831.0" />
       <Label layoutX="792.0" layoutY="76.0" text="*" textFill="RED">
          <font>

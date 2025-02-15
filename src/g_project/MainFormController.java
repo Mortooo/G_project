@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package g_project;
 
 import java.awt.Desktop;
@@ -42,7 +38,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
- * FXML Controller class
+ * MainFormFXML Controller class
  *
  * @author Mortooo.x
  */
@@ -71,8 +67,6 @@ public class MainFormController implements Initializable {
     @FXML
     private TextField v_search_txtf;
     @FXML
-    private Button v_search_btn;
-    @FXML
     private ComboBox<String> v_chombox;
     @FXML
     private TableView<Volunteers> volunteer_table;
@@ -93,10 +87,9 @@ public class MainFormController implements Initializable {
     @FXML
     private TableColumn<?, ?> v_col_id;
     Volunteers volunteers = new Volunteers();
+    Dramatists dramisrc = new Dramatists();
     @FXML
     private TableColumn<?, ?> v_col_proof_identitiy;
-    @FXML
-    private Button v_newV_btn;
     @FXML
     private Button v_saveU_btn;
     @FXML
@@ -121,35 +114,141 @@ public class MainFormController implements Initializable {
     private Button v_selectFile_btn;
     @FXML
     private Label v_path_lable;
+    @FXML
+    private Button dramistic_btn;
+    @FXML
+    private AnchorPane Dramsitic_pan;
+    @FXML
+    private TextField D_search_txtf;
+    @FXML
+    private ComboBox<String> D_chombox;
+    @FXML
+    private TableColumn<?, ?> D_col_id;
+    @FXML
+    private TableColumn<?, ?> D_col_bandName;
+    @FXML
+    private TableColumn<?, ?> d_col_adress;
+    @FXML
+    private TableColumn<?, ?> d_col_phone1;
+    @FXML
+    private TableColumn<?, ?> d_col_account_number;
+    @FXML
+    private TableColumn<?, ?> d_account_name;
+    @FXML
+    private TableColumn<?, ?> d_col_proof_identitiy;
+    @FXML
+    private TableColumn<?, ?> d_col_notes;
+    @FXML
+    private Button add_dramistic_btn;
+    @FXML
+    private Button update_dramistic_btn;
+    @FXML
+    private Button delete_dramistc_btn;
+    @FXML
+    private TableView<Dramatists> dramistc_table;
+    @FXML
+    private AnchorPane add_dramistic_pan;
+    @FXML
+    private TextField d_id_txtf;
+    @FXML
+    private TextField d_name_txtf;
+    @FXML
+    private TextArea d_note_txtf;
+    @FXML
+    private TextField d_address_txtf;
+    @FXML
+    private TextField d_phone_txtf;
+    @FXML
+    private TextField d_account_number_txtf;
+    @FXML
+    private TextField d_account_name_txtf;
+    @FXML
+    private Button d_selectFile_btn;
+    @FXML
+    private Label d_path_lable;
+    @FXML
+    private Button d_saveU_btn;
+    @FXML
+    private Button d_clear;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        v_chombox.getItems().addAll("الملاحظات", "الفئة", "العنوان", "الاسم");
-        numericOnly(v_phone_txtf);
-        numericOnly(v_account_number_txtf);
-        try {
-            v_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
-            v_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
-            v_col_adress.setCellValueFactory(new PropertyValueFactory<>("addrees"));
-            v_col_phone.setCellValueFactory(new PropertyValueFactory<>("phone"));
-            v_account_name.setCellValueFactory(new PropertyValueFactory<>("account_name"));
-            v_col_account_number.setCellValueFactory(new PropertyValueFactory<>("account_number"));
-            v_col_proof_identitiy.setCellValueFactory(new PropertyValueFactory<>("proof_identity"));
-            v_col_class.setCellValueFactory(new PropertyValueFactory<>("calss"));
-            v_col_notes.setCellValueFactory(new PropertyValueFactory<>("note"));
 
-            showdata();
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
+        initializeComboBoxs();//add data to chomboxs 
+        initializeTablesColumns();//link the tables with their data
+        // i will setup search functianly later 
 
-        search();
+        //restrict the values that accepted to numers 
+        restrictNumericInput(v_phone_txtf, 10);
+//        restrictNumericInput(D_phone_txtf, 10);
+        restrictNumericInput(v_account_number_txtf, 16);
+//        restrictNumericInput(d_account_number_txtf, 16);
+        loadData();// this method retrieve data from database and insert it into tables
+
+        search();// add lisnter to search txtf and table view 
 
     }
 
+    private void initializeComboBoxs() {
+        v_chombox.getItems().addAll("الملاحظات", "الفئة", "العنوان", "الاسم");
+        D_chombox.getItems().addAll("العنوان", "الاسم");
+    }
+
+    private void initializeTablesColumns() {
+
+        // voulnteers table
+        v_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        v_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        v_col_adress.setCellValueFactory(new PropertyValueFactory<>("addrees"));
+        v_col_phone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        v_account_name.setCellValueFactory(new PropertyValueFactory<>("account_name"));
+        v_col_account_number.setCellValueFactory(new PropertyValueFactory<>("account_number"));
+        v_col_proof_identitiy.setCellValueFactory(new PropertyValueFactory<>("proof_identity"));
+        v_col_class.setCellValueFactory(new PropertyValueFactory<>("calss"));
+        v_col_notes.setCellValueFactory(new PropertyValueFactory<>("note"));
+        //dramistcs table
+        D_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        D_col_bandName.setCellValueFactory(new PropertyValueFactory<>("band_name"));
+        d_col_adress.setCellValueFactory(new PropertyValueFactory<>("addrees"));
+        d_col_phone1.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        d_account_name.setCellValueFactory(new PropertyValueFactory<>("account_name"));
+        d_col_account_number.setCellValueFactory(new PropertyValueFactory<>("account_number"));
+        d_col_proof_identitiy.setCellValueFactory(new PropertyValueFactory<>("proof_identity"));
+        d_col_notes.setCellValueFactory(new PropertyValueFactory<>("notes"));
+
+    }
+
+    private void restrictNumericInput(TextField field, int maxLength) {
+        field.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d{0," + maxLength + "}")) {
+                field.setText(oldValue);
+            }
+        });
+    }
+
+    private void loadData() {
+        try {
+            //volunteers table
+            ObservableList<Volunteers> volunteersList = FXCollections.observableArrayList(volunteers.getAll());
+            volunteer_table.setItems(volunteersList);
+            // dramistic table 
+            ObservableList<Dramatists> dramisticList = FXCollections.observableArrayList(dramisrc.getAll());
+            dramistc_table.setItems(dramisticList);
+
+        } catch (SQLException ex) {
+            showAlert(AlertType.ERROR, "Database Error", ex.getMessage());
+        }
+    }
+
+    /**
+     * this method retreive data from data base and show it in volunteer table
+     * view
+     *
+     * @throws SQLException
+     */
     public void showdata() throws SQLException {
         ObservableList<Volunteers> list = FXCollections.observableArrayList(volunteers.getAll());
         volunteer_table.setItems(list);
@@ -172,14 +271,12 @@ public class MainFormController implements Initializable {
 
         } else if (event.getSource().equals(dashboard_btn)) {
 
-            hideCurrentAPane();
-            dashboard.setVisible(true);
+            showPane(dashboard);
 
         } else if (event.getSource().equals(vlounteers_btn)) {
 
-            hideCurrentAPane();
-            volunteers_pan.setVisible(true);
-            showdata();
+            showPane(volunteers_pan);
+            loadData();
             clearField();
 
         } else if (event.getSource().equals(update_volunteer_btn)) {
@@ -202,7 +299,9 @@ public class MainFormController implements Initializable {
                 v_class_txtf.setText(v.getCalss());
             }
 
-        } else {
+        } else if (event.getSource().equals(dramistic_btn)) {
+
+            showPane(Dramsitic_pan);
 
         }
 
@@ -223,8 +322,7 @@ public class MainFormController implements Initializable {
 
         if (event.getSource().equals(add_volunteer_btn)) {
 
-            hideCurrentAPane();
-            add_voluntee_pan.setVisible(true);
+            showPane(add_voluntee_pan);
 
         } else if (event.getSource().equals(v_clear)) {
 
@@ -325,30 +423,55 @@ public class MainFormController implements Initializable {
 
     private Volunteers getUserInput() throws IOException {
 
-        Volunteers volunteer = new Volunteers();
-        if (!v_id_txtf.getText().equals("")) {// if update volunteer data
-
-            volunteer.setId(Integer.parseInt(v_id_txtf.getText()));
-
-        }
-        //if new volunteer
-        if (v_name_txtf.getText().equals("") || v_address_txtf.getText().equals("") || v_phone_txtf.getText().equals("")
+            if (v_name_txtf.getText().isEmpty() || v_address_txtf.getText().isEmpty() || v_phone_txtf.getText().isEmpty()
                 || v_path_lable.getText().equals("مسار الملف")) {
-            new Alert(Alert.AlertType.ERROR, "الرجاء ادخال البيانات").showAndWait();
-
-        } else {
-            volunteer.setName(v_name_txtf.getText());
-            volunteer.setAddrees(v_address_txtf.getText());
-            volunteer.setPhone(v_phone_txtf.getText());
-            volunteer.setAccount_name(v_account_name_txtf.getText());
-            volunteer.setAccount_number(v_account_number_txtf.getText());
-            volunteer.setProof_identity(v_path_lable.getText());
-            volunteer.setCalss(v_class_txtf.getText());
-            volunteer.setNote(v_note_txtf.getText());
-
+            showAlert(AlertType.ERROR, "Error", "الرجاء ادخال البيانات");
+            return null;
         }
+
+        Volunteers volunteer = new Volunteers();
+        if (!v_id_txtf.getText().isEmpty()) {
+            volunteer.setId(Integer.parseInt(v_id_txtf.getText()));
+        }
+        volunteer.setName(v_name_txtf.getText());
+        volunteer.setAddrees(v_address_txtf.getText());
+        volunteer.setPhone(v_phone_txtf.getText());
+        volunteer.setAccount_name(v_account_name_txtf.getText());
+        volunteer.setAccount_number(v_account_number_txtf.getText());
+        volunteer.setProof_identity(v_path_lable.getText());
+        volunteer.setCalss(v_class_txtf.getText());
+        volunteer.setNote(v_note_txtf.getText());
 
         return volunteer;
+        
+        
+        
+        
+        
+//        Volunteers volunteer = new Volunteers();
+//        if (!v_id_txtf.getText().equals("")) {// if update volunteer data
+//
+//            volunteer.setId(Integer.parseInt(v_id_txtf.getText()));
+//
+//        }
+//        //if new volunteer
+//        if (v_name_txtf.getText().equals("") || v_address_txtf.getText().equals("") || v_phone_txtf.getText().equals("")
+//                || v_path_lable.getText().equals("مسار الملف")) {
+//            new Alert(Alert.AlertType.ERROR, "الرجاء ادخال البيانات").showAndWait();
+//
+//        } else {
+//            volunteer.setName(v_name_txtf.getText());
+//            volunteer.setAddrees(v_address_txtf.getText());
+//            volunteer.setPhone(v_phone_txtf.getText());
+//            volunteer.setAccount_name(v_account_name_txtf.getText());
+//            volunteer.setAccount_number(v_account_number_txtf.getText());
+//            volunteer.setProof_identity(v_path_lable.getText());
+//            volunteer.setCalss(v_class_txtf.getText());
+//            volunteer.setNote(v_note_txtf.getText());
+//
+//        }
+//
+//        return volunteer;
 
     }
 
@@ -400,7 +523,7 @@ public class MainFormController implements Initializable {
     }
 
     public void clearField() {
-
+        // clear voulnteers felids 
         v_account_name_txtf.setText("");
         v_account_number_txtf.setText("");
         v_address_txtf.setText("");
@@ -410,6 +533,15 @@ public class MainFormController implements Initializable {
         v_path_lable.setText("مسار الملف");
         v_name_txtf.setText("");
         v_id_txtf.setText("");
+        //clear dramistics felids 
+         d_account_name_txtf.setText("");
+        d_account_number_txtf.setText("");
+        d_address_txtf.setText("");
+        d_phone_txtf.setText("");
+        d_note_txtf.setText("");
+        d_path_lable.setText("مسار الملف");
+        d_name_txtf.setText("");
+        d_id_txtf.setText("");
     }
 
     public void search() {
@@ -453,13 +585,53 @@ public class MainFormController implements Initializable {
                             return true; // Match found
                         }
                     }
-                }else{
-                   
+                } else {
+
                 }
 
                 return false; // No match
             });
         });
     }
+
+    @FXML
+    private void handelDramisticBtn(ActionEvent event) {
+
+        if (event.getSource() == add_dramistic_btn) {
+
+            showPane(add_dramistic_pan);
+
+        } else if (event.getSource() == delete_dramistc_btn) {
+
+        } else if (event.getSource() == update_dramistic_btn) {
+
+            showPane(add_dramistic_pan);
+
+        }
+    }
+
+    private void showAlert(AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showPane(AnchorPane pane) {
+        hideAllPanes();
+        pane.setVisible(true);
+    }
+
+    private void hideAllPanes() {
+        for (Node node : pane_view.getChildren()) {
+            if (node instanceof AnchorPane) {
+                node.setVisible(false);
+            }
+        }
+    }
+    
+  
+    
+    
 
 }

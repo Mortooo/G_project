@@ -4,43 +4,43 @@
  */
 package g_project;
 
+import static g_project.Database.getConnection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  *
  * @author Mortooo.x
  */
-public class Volunteers extends Database {
+public class Dramatists extends Database {
 
     private Integer id;
-    private String name;
+    private String band_name;
     private String addrees;
     private String phone;
     private String account_name;
     private String account_number;
     private String proof_identity;
-    private String calss;
-    private String note;
+    private String notes;
 
-    public Volunteers() {
+    public Dramatists() {
     }
 
-    public Volunteers(Integer id) {
+    public Dramatists(Integer id) {
         this.id = id;
     }
 
-    public Volunteers(Integer id, String name, String addrees, String phone, String account_name, String account_number, String proofIdentity, String calss, String note) {
+    public Dramatists(Integer id, String band_name, String addrees, String phone, String accountName, String accountNumber, String proofIdentity, String notes) {
         this.id = id;
-        this.name = name;
+        this.band_name = band_name;
         this.addrees = addrees;
         this.phone = phone;
-        this.account_name = account_name;
-        this.account_number = account_number;
+        this.account_name = accountName;
+        this.account_number = accountNumber;
         this.proof_identity = proofIdentity;
-        this.calss = calss;
-        this.note = note;
+        this.notes = notes;
     }
 
     public Integer getId() {
@@ -51,12 +51,12 @@ public class Volunteers extends Database {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getBand_name() {
+        return band_name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setBand_name(String bandName) {
+        this.band_name = bandName;
     }
 
     public String getAddrees() {
@@ -80,7 +80,7 @@ public class Volunteers extends Database {
     }
 
     public void setAccount_name(String accountName) {
-        this.account_name = accountName;
+        this.account_number = accountName;
     }
 
     public String getAccount_number() {
@@ -95,31 +95,23 @@ public class Volunteers extends Database {
         return proof_identity;
     }
 
-    public void setProof_identity(String proofIdentity) {
+    public void setProofIdentity(String proofIdentity) {
         this.proof_identity = proofIdentity;
     }
 
-    public String getCalss() {
-        return calss;
+    public String getNotes() {
+        return notes;
     }
 
-    public void setCalss(String calss) {
-        this.calss = calss;
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
+    
+    public List<Dramatists> getAll() throws SQLException {
 
-    public String getNote() {
-        return note;
-    }
+        String sql = "SELECT * FROM `dramatists` ;";
 
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    public List<Volunteers> getAll() throws SQLException {
-
-        String sql = "SELECT * FROM `volunteers` ;";
-
-        List<Volunteers> list = new ArrayList<Volunteers>();
+        List<Dramatists> list = new ArrayList<Dramatists>();
 
         con = getConnection();
         pre = con.prepareStatement(sql);
@@ -127,18 +119,17 @@ public class Volunteers extends Database {
 
         while (resultSet.next()) {
 
-            Volunteers volunteer = new Volunteers(resultSet.getInt(1),
+            Dramatists dramatists = new Dramatists(resultSet.getInt(1),
                     resultSet.getString(2),
                     resultSet.getString(3),
                     resultSet.getString(4),
                     resultSet.getString(5),
                     resultSet.getString(6),
                     resultSet.getString(7),
-                    resultSet.getString(8),
-                    resultSet.getString(9)
+                    resultSet.getString(8)
             );
 
-            list.add(volunteer);
+            list.add(dramatists);
         }
 
         resultSet.close();
@@ -147,19 +138,19 @@ public class Volunteers extends Database {
 
         return list;
     }
-
+    
+    
     public void add() throws SQLException {
         con = getConnection();
-        pre = con.prepareStatement("INSERT INTO `volunteers`(`name`, `addrees`, `phone`, `account_name`, `account_number`, `proof_identity`, `calss`, `note`) VALUES (?,?,?,?,?,?,?,?)");
+        pre = con.prepareStatement("INSERT INTO `volunteers`(`band_name`, `addrees`, `phone`, `account_name`, `account_number`, `proof_identity`, `notes`) VALUES (?,?,?,?,?,?,?)");
 
-        pre.setString(1, name);
+        pre.setString(1, band_name);
         pre.setString(2, addrees);
         pre.setString(3, phone);
         pre.setString(4, account_name);
         pre.setString(5, account_number);
         pre.setString(6, proof_identity);
-        pre.setString(7, calss);
-        pre.setString(8, note);
+        pre.setString(8, notes);
 
         pre.executeUpdate();
 
@@ -171,7 +162,7 @@ public class Volunteers extends Database {
     public void remove() throws SQLException {
         con = getConnection();
 
-        pre = con.prepareStatement("DELETE FROM `volunteers` WHERE id=?");
+        pre = con.prepareStatement("DELETE FROM `dramatists` WHERE id=?");
 
         pre.setInt(1, id);
         pre.executeUpdate();
@@ -183,17 +174,16 @@ public class Volunteers extends Database {
 
     public void update() throws SQLException {
         con = getConnection();
-        pre = con.prepareStatement("UPDATE `volunteers` SET `name`=?,`addrees`=?,`phone`=?,`account_name`=?,`account_number`=?,`proof_identity`=?,`calss`=?,`note`=? WHERE id=?;");
+        pre = con.prepareStatement("UPDATE `dramatists` SET `band_name`=?,`addrees`=?,`phone`=?,`account_name`=?,`account_number`=?,`proof_identity`=?,`notes`=? WHERE id=?;");
 
-        pre.setString(1, name);
+        pre.setString(1, band_name);
         pre.setString(2, addrees);
         pre.setString(3, phone);
         pre.setString(4, account_name);
         pre.setString(5, account_number);
         pre.setString(6, proof_identity);
-        pre.setString(7, calss);
-        pre.setString(8, note);
-        pre.setInt(9, id);
+        pre.setString(7, notes);
+        pre.setInt(8, id);
 
         pre.executeUpdate();
 
