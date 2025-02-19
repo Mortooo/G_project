@@ -170,6 +170,40 @@ public class MainFormController implements Initializable {
     private Button d_saveU_btn;
     @FXML
     private Button d_clear;
+    @FXML
+    private AnchorPane contracts_pan;
+    @FXML
+    private TextField D_search_txtf1;
+    @FXML
+    private ComboBox<?> D_chombox1;
+    @FXML
+    private TableView<?> dramistc_table1;
+    @FXML
+    private TableColumn<?, ?> D_col_id1;
+    @FXML
+    private TableColumn<?, ?> D_col_bandName1;
+    @FXML
+    private TableColumn<?, ?> d_col_adress1;
+    @FXML
+    private TableColumn<?, ?> d_col_phone11;
+    @FXML
+    private TableColumn<?, ?> d_col_account_number1;
+    @FXML
+    private TableColumn<?, ?> d_account_name1;
+    @FXML
+    private TableColumn<?, ?> d_col_proof_identitiy1;
+    @FXML
+    private TableColumn<?, ?> d_col_notes1;
+    @FXML
+    private Button add_dramistic_btn1;
+    @FXML
+    private Button update_dramistic_btn1;
+    @FXML
+    private Button delete_dramistc_btn1;
+    @FXML
+    private AnchorPane add_contracts_pan;
+    @FXML
+    private Button v_search_btn2;
 
     /**
      * Initializes the controller class.
@@ -183,12 +217,10 @@ public class MainFormController implements Initializable {
 
         //restrict the values that accepted to numers 
         restrictNumericInput(v_phone_txtf, 10);
-//        restrictNumericInput(D_phone_txtf, 10);
+        restrictNumericInput(d_phone_txtf, 10);
         restrictNumericInput(v_account_number_txtf, 16);
-//        restrictNumericInput(d_account_number_txtf, 16);
+        restrictNumericInput(d_account_number_txtf, 16);
         loadData();// this method retrieve data from database and insert it into tables
-
-        search();// add lisnter to search txtf and table view 
 
     }
 
@@ -243,18 +275,6 @@ public class MainFormController implements Initializable {
         }
     }
 
-    /**
-     * this method retreive data from data base and show it in volunteer table
-     * view
-     *
-     * @throws SQLException
-     */
-    public void showdata() throws SQLException {
-        ObservableList<Volunteers> list = FXCollections.observableArrayList(volunteers.getAll());
-        volunteer_table.setItems(list);
-
-    }
-
     @FXML
     private void handel_btns(ActionEvent event) throws IOException, SQLException {
 
@@ -284,8 +304,7 @@ public class MainFormController implements Initializable {
             if (volunteer_table.getSelectionModel().getSelectedItem() == null) {// if the user did select item from the table
                 new Alert(AlertType.ERROR, "الرجاء اختيار عنصر").showAndWait();
             } else {
-                hideCurrentAPane();
-                add_voluntee_pan.setVisible(true);
+                showPane(add_voluntee_pan);
 
                 Volunteers v = volunteer_table.getSelectionModel().getSelectedItem();
                 v_id_txtf.setText(String.valueOf(v.getId()));
@@ -305,16 +324,6 @@ public class MainFormController implements Initializable {
 
         }
 
-    }
-
-    public void hideCurrentAPane() {//hide the current anchor pane 
-
-        for (Node child : ((javafx.scene.Parent) pane_view).getChildrenUnmodifiable()) {
-            if (child instanceof AnchorPane) {
-                child.setVisible(false);
-            }
-
-        }
     }
 
     @FXML
@@ -347,35 +356,29 @@ public class MainFormController implements Initializable {
 
         } else if (event.getSource().equals(v_saveU_btn)) {
 
-            Volunteers volunteer = getUserInput();
+            Volunteers volunteer = (Volunteers) getUserInput(v_saveU_btn);
 
-            if (volunteer == null) {// if user fill the form 
+            if (volunteer != null)// if the user fill the form
+            {
+                if (volunteer.getId() == null) {// if the id_txtf is empty that mean the user want to add new voulnteer
 
-                if (volunteer != null)// if the user fill the form
-                {
-                    if (volunteer.getId() == null) {// if the id_txtf is empty that mean the user want to add new voulnteer
+                    volunteer.add();// insert data to database
+                    clearField();
+                    new Alert(AlertType.INFORMATION, "تمت اضافة المعزز بنجاح").showAndWait();
 
-                        volunteer.add();// insert data to database
-                        clearField();
-                        new Alert(AlertType.INFORMATION, "تمت اضافة المعزز بنجاح").showAndWait();
+                } else {// update vounteer
 
-                    } else {// update vounteer
+                    Volunteers v = (Volunteers) getUserInput(v_saveU_btn);
+                    v.update();
 
-                        Volunteers v = getUserInput();
-                        v.update();
-//                    showdata();
+                    new Alert(AlertType.INFORMATION, "تم تعديل بيانات المعزز بنجاح").showAndWait();
+                    clearField();
 
-                        new Alert(AlertType.INFORMATION, "تم تعديل بيانات المعزز بنجاح").showAndWait();
-                        clearField();
-
-                        hideCurrentAPane();
-                        volunteers_pan.setVisible(true);
-
-                        showdata();
-                        volunteer_table.refresh();
-                    }
-
+                    showPane(volunteers_pan);
+                    loadData();
+                    volunteer_table.refresh();
                 }
+
             }
 
         } else if (event.getSource().equals(delete_volunteer_btn)) {// delete volunteer
@@ -390,8 +393,7 @@ public class MainFormController implements Initializable {
                     if (response == ButtonType.OK) {
                         try {
                             volunteer_table.getSelectionModel().getSelectedItem().remove();
-                            showData();
-
+                            loadData();
                         } catch (SQLException ex) {
                             Logger.getLogger(MainFormController.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -399,6 +401,15 @@ public class MainFormController implements Initializable {
                 });
             }
 
+        } else if (event.getSource().equals(v_search_btn2)) {
+            
+            // if the user didn`t select catorgry or the search text
+            if (v_search_txtf.getText().isEmpty() || v_chombox.getSelectionModel().isEmpty()) {
+                
+                showAlert(AlertType.ERROR, "خطأ", "الرجاء اخيتار عناصر البحث ");
+            } else {
+                search(v_search_btn2,v_chombox.getSelectionModel().getSelectedItem());
+            }
         }
     }
 
@@ -421,77 +432,57 @@ public class MainFormController implements Initializable {
 
     }
 
-    private Volunteers getUserInput() throws IOException {
+    private Object getUserInput(Button button) throws IOException {
+
+        if (button == v_saveU_btn) {// if the user want to get volunteer data
 
             if (v_name_txtf.getText().isEmpty() || v_address_txtf.getText().isEmpty() || v_phone_txtf.getText().isEmpty()
-                || v_path_lable.getText().equals("مسار الملف")) {
-            showAlert(AlertType.ERROR, "Error", "الرجاء ادخال البيانات");
-            return null;
+                    || v_path_lable.getText().equals("مسار الملف")) {
+                showAlert(AlertType.ERROR, "Error", "الرجاء ادخال البيانات");
+                return null;
+            }
+
+            Volunteers volunteer = new Volunteers();
+            if (!v_id_txtf.getText().isEmpty()) {
+                volunteer.setId(Integer.parseInt(v_id_txtf.getText()));
+            }
+            volunteer.setName(v_name_txtf.getText());
+            volunteer.setAddrees(v_address_txtf.getText());
+            volunteer.setPhone(v_phone_txtf.getText());
+            volunteer.setAccount_name(v_account_name_txtf.getText());
+            volunteer.setAccount_number(v_account_number_txtf.getText());
+            volunteer.setProof_identity(v_path_lable.getText());
+            volunteer.setCalss(v_class_txtf.getText());
+            volunteer.setNote(v_note_txtf.getText());
+
+            return volunteer;
+
+        } else if (button == d_saveU_btn) {// if the user want to add dramistic 
+
+            if (d_name_txtf.getText().isEmpty() || d_address_txtf.getText().isEmpty() || d_phone_txtf.getText().isEmpty()
+                    || d_path_lable.getText().equals("مسار الملف")) {
+                showAlert(AlertType.ERROR, "Error", "الرجاء ادخال البيانات");
+                return null;
+            }
+
+            Dramatists dramatists = new Dramatists();
+            if (!d_id_txtf.getText().isEmpty()) {
+                dramatists.setId(Integer.parseInt(d_id_txtf.getText()));
+            }
+            dramatists.setBand_name(d_name_txtf.getText());
+            dramatists.setAddrees(d_address_txtf.getText());
+            dramatists.setPhone(d_phone_txtf.getText());
+            dramatists.setAccount_name(d_account_name_txtf.getText());
+            dramatists.setAccount_number(d_account_number_txtf.getText());
+            dramatists.setProofIdentity(d_path_lable.getText());
+            dramatists.setNotes(d_note_txtf.getText());
+
+            return dramatists;
+        } else {
+
         }
 
-        Volunteers volunteer = new Volunteers();
-        if (!v_id_txtf.getText().isEmpty()) {
-            volunteer.setId(Integer.parseInt(v_id_txtf.getText()));
-        }
-        volunteer.setName(v_name_txtf.getText());
-        volunteer.setAddrees(v_address_txtf.getText());
-        volunteer.setPhone(v_phone_txtf.getText());
-        volunteer.setAccount_name(v_account_name_txtf.getText());
-        volunteer.setAccount_number(v_account_number_txtf.getText());
-        volunteer.setProof_identity(v_path_lable.getText());
-        volunteer.setCalss(v_class_txtf.getText());
-        volunteer.setNote(v_note_txtf.getText());
-
-        return volunteer;
-        
-        
-        
-        
-        
-//        Volunteers volunteer = new Volunteers();
-//        if (!v_id_txtf.getText().equals("")) {// if update volunteer data
-//
-//            volunteer.setId(Integer.parseInt(v_id_txtf.getText()));
-//
-//        }
-//        //if new volunteer
-//        if (v_name_txtf.getText().equals("") || v_address_txtf.getText().equals("") || v_phone_txtf.getText().equals("")
-//                || v_path_lable.getText().equals("مسار الملف")) {
-//            new Alert(Alert.AlertType.ERROR, "الرجاء ادخال البيانات").showAndWait();
-//
-//        } else {
-//            volunteer.setName(v_name_txtf.getText());
-//            volunteer.setAddrees(v_address_txtf.getText());
-//            volunteer.setPhone(v_phone_txtf.getText());
-//            volunteer.setAccount_name(v_account_name_txtf.getText());
-//            volunteer.setAccount_number(v_account_number_txtf.getText());
-//            volunteer.setProof_identity(v_path_lable.getText());
-//            volunteer.setCalss(v_class_txtf.getText());
-//            volunteer.setNote(v_note_txtf.getText());
-//
-//        }
-//
-//        return volunteer;
-
-    }
-
-    private void showData() throws SQLException {
-
-        ObservableList<Volunteers> list = FXCollections.observableArrayList(volunteers.getAll());
-        volunteer_table.setItems(list);
-//        try {
-//            col_productName.setCellValueFactory(new PropertyValueFactory<>("pName"));
-//            col_unit.setCellValueFactory(new PropertyValueFactory<>("unit"));
-//            col_price.setCellValueFactory(new PropertyValueFactory<>("price"));
-//            col_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-//
-//            ObservableList<Products> p = FXCollections.observableArrayList(products.getAll());
-//
-//            table.setItems(p);
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//        }
-
+        return null;
     }
 
     public void numericOnly(final TextField field) {
@@ -534,7 +525,7 @@ public class MainFormController implements Initializable {
         v_name_txtf.setText("");
         v_id_txtf.setText("");
         //clear dramistics felids 
-         d_account_name_txtf.setText("");
+        d_account_name_txtf.setText("");
         d_account_number_txtf.setText("");
         d_address_txtf.setText("");
         d_phone_txtf.setText("");
@@ -544,58 +535,17 @@ public class MainFormController implements Initializable {
         d_id_txtf.setText("");
     }
 
-    public void search() {
-        // Wrap the observable list in a FilteredList
-        FilteredList<Volunteers> filteredData = new FilteredList<>(volunteer_table.getItems(), p -> true);
+    public void search(Button btnType,String searchCat) throws SQLException {
 
-        // Bind the FilteredList to the TableView
-        SortedList<Volunteers> sortedData = new SortedList<>(filteredData);
-        sortedData.comparatorProperty().bind(volunteer_table.comparatorProperty());
-        volunteer_table.setItems(sortedData);
+        if (btnType == v_search_btn2) {// if the user want to search in volunteers 
+             ObservableList<Volunteers> volunteersList = FXCollections.observableArrayList(volunteers.search(searchCat, v_search_txtf.getText()));
+            volunteer_table.setItems(volunteersList);
+        }
 
-//        // Create a TextField for search
-//        TextField searchField = new TextField();
-//        searchField.setPromptText("Search by name...");
-        // Add a listener to the search field
-        v_search_txtf.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredData.setPredicate(person -> {
-                // If the search field is empty, display all persons
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
-
-                // Convert the search query to lowercase for case-insensitive search
-                String lowerCaseQuery = newValue.toLowerCase();
-                if (v_chombox.getSelectionModel().getSelectedItem() != null) {
-                    if (v_chombox.getSelectionModel().getSelectedItem().equals("الاسم")) {
-                        // Check if the person's name contains the search query
-                        if (person.getName().toLowerCase().contains(lowerCaseQuery)) {
-                            return true; // Match found
-                        }
-                    } else if (v_chombox.getSelectionModel().getSelectedItem().equals("العنوان")) {
-                        if (person.getAddrees().toLowerCase().contains(lowerCaseQuery)) {
-                            return true; // Match found
-                        }
-                    } else if (v_chombox.getSelectionModel().getSelectedItem().equals("الفئة")) {
-                        if (person.getCalss().toLowerCase().contains(lowerCaseQuery)) {
-                            return true; // Match found
-                        }
-                    } else if (v_chombox.getSelectionModel().getSelectedItem().equals("الملاحظات")) {
-                        if (person.getNote().toLowerCase().contains(lowerCaseQuery)) {
-                            return true; // Match found
-                        }
-                    }
-                } else {
-
-                }
-
-                return false; // No match
-            });
-        });
     }
 
     @FXML
-    private void handelDramisticBtn(ActionEvent event) {
+    private void handelDramisticBtn(ActionEvent event) throws IOException, SQLException {
 
         if (event.getSource() == add_dramistic_btn) {
 
@@ -603,9 +553,84 @@ public class MainFormController implements Initializable {
 
         } else if (event.getSource() == delete_dramistc_btn) {
 
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+
+            if (dramistc_table.getSelectionModel().getSelectedItem() == null) {// if the user did select item from the table
+                new Alert(AlertType.ERROR, "الرجاء اختيار عنصر").showAndWait();
+            } else {
+                alert.setContentText("هل تريد حذف المعزز؟");
+                alert.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        try {
+                            dramistc_table.getSelectionModel().getSelectedItem().remove();
+                            loadData();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(MainFormController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                });
+            }
+
         } else if (event.getSource() == update_dramistic_btn) {
 
+            if (dramistc_table.getSelectionModel().getSelectedItem() == null) {// if the user did select item from the table
+                new Alert(AlertType.ERROR, "الرجاء اختيار عنصر").showAndWait();
+            } else {
+
+                Dramatists d = dramistc_table.getSelectionModel().getSelectedItem();
+                d_id_txtf.setText(String.valueOf(d.getId()));
+                d_name_txtf.setText(d.getBand_name());
+                d_address_txtf.setText(d.getAddrees());
+                d_phone_txtf.setText(d.getPhone());
+                d_account_name_txtf.setText(d.getAccount_name());
+                d_account_number_txtf.setText(d.getAccount_number());
+                d_path_lable.setText(d.getProof_identity());
+                d_note_txtf.setText(d.getNotes());
+
+            }
             showPane(add_dramistic_pan);
+
+        } else if (event.getSource() == d_saveU_btn) {
+
+            Dramatists dramatists = (Dramatists) getUserInput(d_saveU_btn);
+
+            if (dramatists != null)// if the user fill the form
+            {
+                if (dramatists.getId() == null) {// if the id_txtf is empty that mean the user want to add new voulnteer
+                    dramatists.add();// insert data to database
+                    clearField();
+                    new Alert(AlertType.INFORMATION, "تمت اضافة الفرقة بنجاح").showAndWait();
+
+                } else {// update vounteer
+
+                    Dramatists d = (Dramatists) getUserInput(d_saveU_btn);
+                    d.update();
+
+                    new Alert(AlertType.INFORMATION, "تم تعديل بيانات الفرقة بنجاح").showAndWait();
+                    clearField();
+
+                    showPane(Dramsitic_pan);
+
+                    loadData();
+                    dramistc_table.refresh();
+                }
+
+            }
+
+        } else if (event.getSource() == d_selectFile_btn) {
+
+            FileChooser chooser = new FileChooser();
+
+            File selectedFile = chooser.showOpenDialog(null);
+            try {
+                d_path_lable.setText(selectedFile.getPath());
+            } catch (Exception e) {
+
+            }
+
+        } else if (event.getSource() == d_clear) {
+
+            clearField();
 
         }
     }
@@ -629,9 +654,5 @@ public class MainFormController implements Initializable {
             }
         }
     }
-    
-  
-    
-    
 
 }

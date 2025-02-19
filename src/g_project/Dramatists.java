@@ -80,7 +80,7 @@ public class Dramatists extends Database {
     }
 
     public void setAccount_name(String accountName) {
-        this.account_number = accountName;
+        this.account_name = accountName;
     }
 
     public String getAccount_number() {
@@ -142,7 +142,7 @@ public class Dramatists extends Database {
     
     public void add() throws SQLException {
         con = getConnection();
-        pre = con.prepareStatement("INSERT INTO `volunteers`(`band_name`, `addrees`, `phone`, `account_name`, `account_number`, `proof_identity`, `notes`) VALUES (?,?,?,?,?,?,?)");
+        pre = con.prepareStatement("INSERT INTO `dramatists`(`band_name`, `addrees`, `phone`, `account_name`, `account_number`, `proof_identity`, `notes`) VALUES (?,?,?,?,?,?,?)");
 
         pre.setString(1, band_name);
         pre.setString(2, addrees);
@@ -150,7 +150,7 @@ public class Dramatists extends Database {
         pre.setString(4, account_name);
         pre.setString(5, account_number);
         pre.setString(6, proof_identity);
-        pre.setString(8, notes);
+        pre.setString(7, notes);
 
         pre.executeUpdate();
 

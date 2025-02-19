@@ -202,4 +202,47 @@ public class Volunteers extends Database {
 
     }
 
+    public List<Volunteers> search(String cat,String txt) throws SQLException {
+     
+        String catogry=switch (cat) {
+            case "الاسم" ->"name";
+            case "العنوان"->"addrees";
+            case "الملاحظات"->"note";
+            case "الفئة"->"calss";
+            default ->"";
+        };
+
+        
+        
+        String sql = "SELECT * FROM `volunteers` WHERE `"+catogry+"` LIKE '%"+txt+"%';";
+
+        List<Volunteers> list = new ArrayList<Volunteers>();
+
+        con = getConnection();
+        pre = con.prepareStatement(sql);
+        resultSet = pre.executeQuery();
+
+        while (resultSet.next()) {
+
+            Volunteers volunteer = new Volunteers(resultSet.getInt(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getString(4),
+                    resultSet.getString(5),
+                    resultSet.getString(6),
+                    resultSet.getString(7),
+                    resultSet.getString(8),
+                    resultSet.getString(9)
+            );
+
+            list.add(volunteer);
+        }
+
+        resultSet.close();
+        pre.close();
+        con.close();
+
+        return list;
+    }
+
 }

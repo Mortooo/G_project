@@ -55,7 +55,7 @@
                         </Button>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="volunteers_pan" layoutX="115.0" layoutY="44.0" prefHeight="614.0" prefWidth="750.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <AnchorPane fx:id="volunteers_pan" layoutX="115.0" layoutY="44.0" prefHeight="614.0" prefWidth="750.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <TextField fx:id="v_search_txtf" layoutX="245.0" layoutY="22.0" prefHeight="40.0" prefWidth="492.0" />
                         <ComboBox fx:id="v_chombox" layoutX="129.0" layoutY="25.0" prefHeight="35.0" prefWidth="97.0" />
@@ -83,6 +83,11 @@
                            </font>
                         </Button>
                         <Button fx:id="delete_volunteer_btn" layoutX="144.0" layoutY="560.0" mnemonicParsing="false" onAction="#v_handelBtn" prefHeight="40.0" prefWidth="131.0" styleClass="update-btn" stylesheets="@fxml.css" text="حذف" textFill="WHITE">
+                           <font>
+                              <Font name="Arial" size="19.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="v_search_btn2" layoutX="24.0" layoutY="23.0" mnemonicParsing="false" onAction="#v_handelBtn" prefHeight="39.0" prefWidth="87.0" styleClass="login-btn" stylesheets="@fxml.css" text="بحث" textFill="WHITE">
                            <font>
                               <Font name="Arial" size="19.0" />
                            </font>
@@ -241,7 +246,7 @@
                         </Label>
                      </children>
                   </AnchorPane>
-                  <AnchorPane id="AnchorPane" fx:id="add_dramistic_pan" prefHeight="614.0" prefWidth="750.0">
+                  <AnchorPane id="AnchorPane" fx:id="add_dramistic_pan" prefHeight="614.0" prefWidth="750.0" visible="false">
                      <children>
                         <Label layoutX="668.0" layoutY="16.0" text="الرقم التعريفي : ">
                            <font>
@@ -290,10 +295,10 @@
                         <TextField fx:id="d_phone_txtf" layoutX="121.0" layoutY="219.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="25.0" prefWidth="662.0" promptText="09XXXXXXXX" />
                         <TextField fx:id="d_account_number_txtf" layoutX="121.0" layoutY="282.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="25.0" prefWidth="662.0" promptText="123XXXXXXXXXXXXX" />
                         <TextField fx:id="d_account_name_txtf" layoutX="119.0" layoutY="339.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="25.0" prefWidth="662.0" promptText="الاسم رباعي" />
-                        <Button fx:id="d_selectFile_btn" layoutX="571.0" layoutY="374.0" mnemonicParsing="false" onAction="#v_handelBtn" text="تصفح" />
+                        <Button fx:id="d_selectFile_btn" layoutX="571.0" layoutY="374.0" mnemonicParsing="false" onAction="#handelDramisticBtn" text="تصفح" />
                         <Label fx:id="d_path_lable" contentDisplay="RIGHT" layoutX="119.0" layoutY="383.0" onMouseClicked="#openFile" prefHeight="17.0" prefWidth="432.0" text="مسار الملف" />
-                        <Button fx:id="d_saveU_btn" layoutX="243.0" layoutY="563.0" mnemonicParsing="false" onAction="#v_handelBtn" prefHeight="35.0" prefWidth="109.0" styleClass="update-btn" stylesheets="@mainfxml.css" text="حفظ" />
-                        <Button fx:id="d_clear" layoutX="119.0" layoutY="563.0" mnemonicParsing="false" onAction="#v_handelBtn" prefHeight="35.0" prefWidth="109.0" styleClass="clear-btn" stylesheets="@mainfxml.css" text="افراغ الخانات" />
+                        <Button fx:id="d_saveU_btn" layoutX="243.0" layoutY="563.0" mnemonicParsing="false" onAction="#handelDramisticBtn" prefHeight="35.0" prefWidth="109.0" styleClass="update-btn" stylesheets="@mainfxml.css" text="حفظ" />
+                        <Button fx:id="d_clear" layoutX="119.0" layoutY="563.0" mnemonicParsing="false" onAction="#handelDramisticBtn" prefHeight="35.0" prefWidth="109.0" styleClass="clear-btn" stylesheets="@mainfxml.css" text="افراغ الخانات" />
                         <Separator layoutY="546.0" prefHeight="7.0" prefWidth="831.0" />
                         <Label layoutX="792.0" layoutY="76.0" text="*" textFill="RED">
                            <font>
@@ -317,6 +322,41 @@
                         </Label>
                      </children>
                   </AnchorPane>
+                  <AnchorPane fx:id="contracts_pan" prefHeight="614.0" prefWidth="895.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <TextField fx:id="D_search_txtf1" layoutX="239.0" layoutY="15.0" prefHeight="40.0" prefWidth="492.0" />
+                        <ComboBox fx:id="D_chombox1" layoutX="118.0" layoutY="18.0" prefHeight="35.0" prefWidth="97.0" />
+                        <TableView fx:id="dramistc_table1" layoutX="8.0" layoutY="60.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="468.0" prefWidth="877.0">
+                           <columns>
+                              <TableColumn fx:id="D_col_id1" prefWidth="38.0" text="الرقم" />
+                              <TableColumn fx:id="D_col_bandName1" prefWidth="146.0" text="اسم الفرقة" />
+                              <TableColumn fx:id="d_col_adress1" prefWidth="151.0" text="العنوان" />
+                              <TableColumn fx:id="d_col_phone11" prefWidth="81.0" text="الهاتف" />
+                              <TableColumn fx:id="d_col_account_number1" prefWidth="77.0" text="رقم الحساب" />
+                              <TableColumn fx:id="d_account_name1" prefWidth="134.0" text="باسم" />
+                              <TableColumn fx:id="d_col_proof_identitiy1" prefWidth="51.0" text="الاثبات" />
+                              <TableColumn fx:id="d_col_notes1" prefWidth="198.0" text="ملاحظات" />
+                           </columns>
+                        </TableView>
+                        <Button fx:id="add_dramistic_btn1" layoutX="511.0" layoutY="548.0" mnemonicParsing="false" onAction="#handelDramisticBtn" prefHeight="40.0" prefWidth="131.0" styleClass="login-btn" stylesheets="@fxml.css" text="اضافة" textFill="WHITE">
+                           <font>
+                              <Font name="Arial" size="19.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="update_dramistic_btn1" layoutX="354.0" layoutY="548.0" mnemonicParsing="false" onAction="#handelDramisticBtn" prefHeight="40.0" prefWidth="131.0" styleClass="clear-btn" stylesheets="@mainfxml.css" text="تعديل" textFill="WHITE">
+                           <font>
+                              <Font name="Arial" size="19.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="delete_dramistc_btn1" layoutX="201.0" layoutY="548.0" mnemonicParsing="false" onAction="#handelDramisticBtn" prefHeight="40.0" prefWidth="131.0" styleClass="update-btn" stylesheets="@fxml.css" text="حذف" textFill="WHITE">
+                           <font>
+                              <Font name="Arial" size="19.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="add_contracts_pan" prefHeight="614.0" prefWidth="895.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="root" stylesheets="@fxml.css">
