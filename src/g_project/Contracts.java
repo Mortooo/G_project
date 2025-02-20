@@ -138,7 +138,7 @@ public class Contracts extends Database {
     // Method to add a new contract to the database
     public void add() throws SQLException {
         con = getConnection();
-        pre = con.prepareStatement("INSERT INTO `contracts`(`car_owner_name`, `address`, `car_license`, `driver_ID`, `witnesss_ID`, `phone`, `driver_license`) VALUES (?,?,?,?,?,?,?)");
+        pre = con.prepareStatement("INSERT INTO `contracts`(`car_owner_name`, `addrees`, `car_license`, `driver_ID`, `witnesss_ID`, `phone`, `driver_license`) VALUES (?,?,?,?,?,?,?)");
 
         pre.setString(1, car_owner_name);
         pre.setString(2, address);
@@ -168,7 +168,7 @@ public class Contracts extends Database {
     // Method to update a contract in the database
     public void update() throws SQLException {
         con = getConnection();
-        pre = con.prepareStatement("UPDATE `contracts` SET `car_owner_name`=?, `address`=?, `car_license`=?, `driver_ID`=?, `witnesss_ID`=?, `phone`=?, `driver_license`=? WHERE id=?");
+        pre = con.prepareStatement("UPDATE `contracts` SET `car_owner_name`=?, `addrees`=?, `car_license`=?, `driver_ID`=?, `witnesss_ID`=?, `phone`=?, `driver_license`=? WHERE id=?");
 
         pre.setString(1, car_owner_name);
         pre.setString(2, address);

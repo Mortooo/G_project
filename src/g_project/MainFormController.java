@@ -90,7 +90,7 @@ public class MainFormController implements Initializable {
     private TableColumn<?, ?> v_col_id;
     Volunteers volunteers = new Volunteers();
     Dramatists dramisrc = new Dramatists();
-    Contracts contracts=new Contracts();
+    Contracts contracts = new Contracts();
     @FXML
     private TableColumn<?, ?> v_col_proof_identitiy;
     @FXML
@@ -211,6 +211,34 @@ public class MainFormController implements Initializable {
     private TableColumn<?, ?> c_col_phone;
     @FXML
     private Button c_search_btn;
+    @FXML
+    private Button c_saveU_btn;
+    @FXML
+    private Button c_clear;
+    @FXML
+    private TextField c_phone_txtf;
+    @FXML
+    private TextField c_id_txtf;
+    @FXML
+    private TextField c_car_owner_name_txtf;
+    @FXML
+    private TextField c_address_txtf;
+    @FXML
+    private Label c_carL_lable;
+    @FXML
+    private Label c_driverL_lable;
+    @FXML
+    private Label c_driver_ID_lable;
+    @FXML
+    private Label c_witness_lable;
+    @FXML
+    private Button c_selectCarL_btn;
+    @FXML
+    private Button c_selectDriverL_btn;
+    @FXML
+    private Button c_selectDriverID_btn;
+    @FXML
+    private Button c_selectWitness_btn;
 
     /**
      * Initializes the controller class.
@@ -225,6 +253,7 @@ public class MainFormController implements Initializable {
         //restrict the values that accepted to numers 
         restrictNumericInput(v_phone_txtf, 10);
         restrictNumericInput(d_phone_txtf, 10);
+        restrictNumericInput(c_phone_txtf, 10);
         restrictNumericInput(v_account_number_txtf, 16);
         restrictNumericInput(d_account_number_txtf, 16);
         loadData();// this method retrieve data from database and insert it into tables
@@ -343,7 +372,7 @@ public class MainFormController implements Initializable {
 
             showPane(Dramsitic_pan);
 
-        } else if(event.getSource().equals(contracts_btn)) {
+        } else if (event.getSource().equals(contracts_btn)) {
             showPane(contracts_pan);
             loadData();
         }
@@ -439,15 +468,28 @@ public class MainFormController implements Initializable {
 
     @FXML
     private void openFile(MouseEvent event) throws IOException {
-
         try {
-            File file = new File(v_path_lable.getText());
+            File file;
 
-            if (Desktop.isDesktopSupported()) {
-                Desktop.getDesktop().open(file); // Open the file with the default application
-            } else {
+            if (!Desktop.isDesktopSupported()) {
                 System.err.println("Desktop is not supported on this platform.");
             }
+
+            if (event.getSource() == v_path_lable) {
+                Desktop.getDesktop().open(file = new File(v_path_lable.getText())); // Open the file with the default application
+            } else if (event.getSource() == d_path_lable) {
+                Desktop.getDesktop().open(file = new File(d_path_lable.getText())); // Open the file with the default application
+            } else if (event.getSource() == c_carL_lable) {
+                Desktop.getDesktop().open(file = new File(c_carL_lable.getText())); // Open the file with the default application
+            } else if (event.getSource() == c_driverL_lable) {
+                Desktop.getDesktop().open(file = new File(c_driverL_lable.getText())); // Open the file with the default application
+            } else if (event.getSource() == c_driver_ID_lable) {
+                Desktop.getDesktop().open(file = new File(c_driver_ID_lable.getText())); // Open the file with the default application
+            } else if (event.getSource() == c_witness_lable) {
+                Desktop.getDesktop().open(file = new File(c_witness_lable.getText())); // Open the file with the default application
+
+            }
+
         } catch (Exception e) {
 
             new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
@@ -502,7 +544,28 @@ public class MainFormController implements Initializable {
             dramatists.setNotes(d_note_txtf.getText());
 
             return dramatists;
-        } else {
+        } else if (button == c_saveU_btn) {// if the user want to add contract
+
+            System.out.println("press save bottn ");
+            if (c_car_owner_name_txtf.getText().isEmpty() || c_address_txtf.getText().isEmpty() || c_phone_txtf.getText().isEmpty()) {
+                showAlert(AlertType.ERROR, "Error", "الرجاء ادخال البيانات ");
+                return null;
+            }
+
+            Contracts contract = new Contracts();
+            if (!c_id_txtf.getText().isEmpty()) {
+                contract.setId(Integer.parseInt(c_id_txtf.getText()));
+            }
+
+            contract.setCar_owner_name(c_car_owner_name_txtf.getText());
+            contract.setAddress(c_address_txtf.getText());
+            contract.setCar_license(c_carL_lable.getText());
+            contract.setDriver_ID(c_driver_ID_lable.getText());
+            contract.setWitnesss_ID(c_witness_lable.getText());
+            contract.setPhone(c_phone_txtf.getText());
+            contract.setDriver_license(c_driver_ID_lable.getText());
+
+            return contract;
 
         }
 
@@ -557,6 +620,14 @@ public class MainFormController implements Initializable {
         d_path_lable.setText("مسار الملف");
         d_name_txtf.setText("");
         d_id_txtf.setText("");
+        // clear contracts felids
+        c_car_owner_name_txtf.setText("");
+        c_address_txtf.setText("");
+        c_carL_lable.setText("مسار الملف");
+        c_driver_ID_lable.setText("مسار الملف");
+        c_witness_lable.setText("مسار الملف");
+        c_phone_txtf.setText("");
+        c_driverL_lable.setText("مسار الملف");
     }
 
     public void search(Button btnType, String searchCat) throws SQLException {
@@ -567,10 +638,10 @@ public class MainFormController implements Initializable {
         } else if (btnType == d_search_btn) {// if the user want to search in dramactic 
             ObservableList<Dramatists> dramatisticList = FXCollections.observableArrayList(dramisrc.search(searchCat, D_search_txtf.getText()));
             dramistc_table.setItems(dramatisticList);
-        } else if(btnType == c_search_btn) {// if the user want to search in contracts
+        } else if (btnType == c_search_btn) {// if the user want to search in contracts
             ObservableList<Contracts> contractsList = FXCollections.observableArrayList(contracts.search(searchCat, C_search_txtf.getText()));
             contracts_table.setItems(contractsList);
-             }
+        }
 
     }
 
@@ -697,8 +768,8 @@ public class MainFormController implements Initializable {
     }
 
     @FXML
-    private void handelContractsBtn(ActionEvent event) throws SQLException {
-        if (event.getSource() == c_search_btn){
+    private void handelContractsBtn(ActionEvent event) throws SQLException, IOException {
+        if (event.getSource() == c_search_btn) {
             // if the user didn`t select catorgry or the search text
             if (C_search_txtf.getText().isEmpty() || C_chombox.getSelectionModel().isEmpty()) {
 
@@ -708,6 +779,105 @@ public class MainFormController implements Initializable {
 
             }
 
+        } else if (event.getSource() == add_contract_btn) {
+
+            showPane(add_contracts_pan);
+
+        } else if (event.getSource() == delete_contracts_btn) {
+
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+
+            if (contracts_table.getSelectionModel().getSelectedItem() == null) {// if the user did select item from the table
+                new Alert(AlertType.ERROR, "الرجاء اختيار عنصر").showAndWait();
+            } else {
+                alert.setContentText("هل تريد حذف المتعاقد؟");
+                alert.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        try {
+                            contracts_table.getSelectionModel().getSelectedItem().remove();
+                            loadData();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(MainFormController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                });
+            }
+
+        } else if (event.getSource() == update_contracts_btn) {
+
+            if (contracts_table.getSelectionModel().getSelectedItem() == null) {// if the user did select item from the table
+                new Alert(AlertType.ERROR, "الرجاء اختيار عنصر ").showAndWait();
+
+            } else {
+                Contracts c = contracts_table.getSelectionModel().getSelectedItem();
+
+                c_id_txtf.setText(String.valueOf(c.getId()));
+                c_car_owner_name_txtf.setText(c.getCar_owner_name());
+                c_address_txtf.setText(c.getAddress());
+                c_carL_lable.setText(c.getCar_license());
+                c_driver_ID_lable.setText(c.getDriver_ID());
+                c_driverL_lable.setText(c.getWitnesss_ID());
+                c_phone_txtf.setText(c.getPhone());
+                c_witness_lable.setText(c.getDriver_license());
+
+                showPane(add_contracts_pan);
+
+            }
+
+        } else if (event.getSource() == c_clear) {
+            clearField();
+        } else if (event.getSource() == c_saveU_btn) {
+            Contracts contracts = (Contracts) getUserInput(c_saveU_btn);
+
+            if (contracts != null) {
+                if (contracts.getId() == null) {
+                    contracts.add();
+                    clearField();
+                    new Alert(AlertType.INFORMATION, "تمت اضافة المتعاقد بنجاح").showAndWait();
+                } else {
+                    contracts.update();
+                    new Alert(AlertType.INFORMATION, "تم تعديل بيانات المتعاقد بنجاح").showAndWait();
+                    clearField();
+                    showPane(contracts_pan);
+                    loadData();
+                    contracts_table.refresh();
+                }
+            }
+
+        } else if (event.getSource() == c_selectCarL_btn) {
+            FileChooser chooser = new FileChooser();
+
+            File selectedFile = chooser.showOpenDialog(null);
+            try {
+                c_carL_lable.setText(selectedFile.getPath());
+            } catch (Exception e) {
+            }
+
+        } else if (event.getSource() == c_selectDriverL_btn) {
+            FileChooser chooser = new FileChooser();
+
+            File selectedFile = chooser.showOpenDialog(null);
+            try {
+                c_driverL_lable.setText(selectedFile.getPath());
+            } catch (Exception e) {
+            }
+        } else if (event.getSource() == c_selectWitness_btn) {
+            FileChooser chooser = new FileChooser();
+
+            File selectedFile = chooser.showOpenDialog(null);
+            try {
+                c_witness_lable.setText(selectedFile.getPath());
+            } catch (Exception e) {
+            }
+
+        } else if (event.getSource() == c_selectDriverID_btn) {
+            FileChooser chooser = new FileChooser();
+
+            File selectedFile = chooser.showOpenDialog(null);
+            try {
+                c_driver_ID_lable.setText(selectedFile.getPath());
+            } catch (Exception e) {
+            }
         }
 
     }
