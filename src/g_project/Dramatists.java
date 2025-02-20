@@ -139,6 +139,47 @@ public class Dramatists extends Database {
         return list;
     }
     
+        public List<Dramatists> search(String cat,String txt) throws SQLException {
+     
+        String catogry=switch (cat) {
+            case "الاسم" ->"band_name";
+            case "العنوان"->"addrees";
+            default ->"";
+        };
+
+        
+        
+        String sql = "SELECT * FROM `dramatists` WHERE `"+catogry+"` LIKE '%"+txt+"%';";
+
+        List<Dramatists> list = new ArrayList<Dramatists>();
+
+        con = getConnection();
+        pre = con.prepareStatement(sql);
+        resultSet = pre.executeQuery();
+
+        while (resultSet.next()) {
+
+            Dramatists dramatists = new Dramatists(resultSet.getInt(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getString(4),
+                    resultSet.getString(5),
+                    resultSet.getString(6),
+                    resultSet.getString(7),
+                    resultSet.getString(8)
+            );
+
+            list.add(dramatists);
+        }
+
+        resultSet.close();
+        pre.close();
+        con.close();
+
+        return list;
+    }
+
+    
     
     public void add() throws SQLException {
         con = getConnection();

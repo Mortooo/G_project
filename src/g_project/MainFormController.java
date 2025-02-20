@@ -59,6 +59,8 @@ public class MainFormController implements Initializable {
     @FXML
     private Button vlounteers_btn;
     @FXML
+    private Button contracts_btn;
+    @FXML
     private Button add_volunteer_btn;
     @FXML
     private Button update_volunteer_btn;
@@ -88,6 +90,7 @@ public class MainFormController implements Initializable {
     private TableColumn<?, ?> v_col_id;
     Volunteers volunteers = new Volunteers();
     Dramatists dramisrc = new Dramatists();
+    Contracts contracts=new Contracts();
     @FXML
     private TableColumn<?, ?> v_col_proof_identitiy;
     @FXML
@@ -173,37 +176,41 @@ public class MainFormController implements Initializable {
     @FXML
     private AnchorPane contracts_pan;
     @FXML
-    private TextField D_search_txtf1;
-    @FXML
-    private ComboBox<?> D_chombox1;
-    @FXML
-    private TableView<?> dramistc_table1;
-    @FXML
-    private TableColumn<?, ?> D_col_id1;
-    @FXML
-    private TableColumn<?, ?> D_col_bandName1;
-    @FXML
-    private TableColumn<?, ?> d_col_adress1;
-    @FXML
-    private TableColumn<?, ?> d_col_phone11;
-    @FXML
-    private TableColumn<?, ?> d_col_account_number1;
-    @FXML
-    private TableColumn<?, ?> d_account_name1;
-    @FXML
-    private TableColumn<?, ?> d_col_proof_identitiy1;
-    @FXML
-    private TableColumn<?, ?> d_col_notes1;
-    @FXML
-    private Button add_dramistic_btn1;
-    @FXML
-    private Button update_dramistic_btn1;
-    @FXML
-    private Button delete_dramistc_btn1;
-    @FXML
     private AnchorPane add_contracts_pan;
     @FXML
     private Button v_search_btn2;
+    @FXML
+    private Button d_search_btn;
+    @FXML
+    private TextField C_search_txtf;
+    @FXML
+    private ComboBox<String> C_chombox;
+    @FXML
+    private TableView<Contracts> contracts_table;
+    @FXML
+    private Button add_contract_btn;
+    @FXML
+    private Button update_contracts_btn;
+    @FXML
+    private Button delete_contracts_btn;
+    @FXML
+    private TableColumn<?, ?> c_col_id;
+    @FXML
+    private TableColumn<?, ?> c_col_car_owner_name;
+    @FXML
+    private TableColumn<?, ?> c_col_adress;
+    @FXML
+    private TableColumn<?, ?> c_col_car_license;
+    @FXML
+    private TableColumn<?, ?> c_col_driver_license;
+    @FXML
+    private TableColumn<?, ?> c_col_driver_id;
+    @FXML
+    private TableColumn<?, ?> c_col_witness;
+    @FXML
+    private TableColumn<?, ?> c_col_phone;
+    @FXML
+    private Button c_search_btn;
 
     /**
      * Initializes the controller class.
@@ -227,6 +234,7 @@ public class MainFormController implements Initializable {
     private void initializeComboBoxs() {
         v_chombox.getItems().addAll("الملاحظات", "الفئة", "العنوان", "الاسم");
         D_chombox.getItems().addAll("العنوان", "الاسم");
+        C_chombox.getItems().addAll("العنوان", "الاسم");
     }
 
     private void initializeTablesColumns() {
@@ -250,6 +258,15 @@ public class MainFormController implements Initializable {
         d_col_account_number.setCellValueFactory(new PropertyValueFactory<>("account_number"));
         d_col_proof_identitiy.setCellValueFactory(new PropertyValueFactory<>("proof_identity"));
         d_col_notes.setCellValueFactory(new PropertyValueFactory<>("notes"));
+        //Contracts table
+        c_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        c_col_car_owner_name.setCellValueFactory(new PropertyValueFactory<>("car_owner_name"));
+        c_col_adress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        c_col_car_license.setCellValueFactory(new PropertyValueFactory<>("car_license"));
+        c_col_driver_license.setCellValueFactory(new PropertyValueFactory<>("driver_license"));
+        c_col_driver_id.setCellValueFactory(new PropertyValueFactory<>("driver_ID"));
+        c_col_witness.setCellValueFactory(new PropertyValueFactory<>("witnesss_ID"));
+        c_col_phone.setCellValueFactory(new PropertyValueFactory<>("phone"));
 
     }
 
@@ -269,8 +286,12 @@ public class MainFormController implements Initializable {
             // dramistic table 
             ObservableList<Dramatists> dramisticList = FXCollections.observableArrayList(dramisrc.getAll());
             dramistc_table.setItems(dramisticList);
+            // contracts table
+            ObservableList<Contracts> contractsList = FXCollections.observableArrayList(contracts.getAll());
+            contracts_table.setItems(contractsList);
 
         } catch (SQLException ex) {
+            System.out.println(ex.toString());
             showAlert(AlertType.ERROR, "Database Error", ex.getMessage());
         }
     }
@@ -322,6 +343,9 @@ public class MainFormController implements Initializable {
 
             showPane(Dramsitic_pan);
 
+        } else if(event.getSource().equals(contracts_btn)) {
+            showPane(contracts_pan);
+            loadData();
         }
 
     }
@@ -402,13 +426,13 @@ public class MainFormController implements Initializable {
             }
 
         } else if (event.getSource().equals(v_search_btn2)) {
-            
+
             // if the user didn`t select catorgry or the search text
             if (v_search_txtf.getText().isEmpty() || v_chombox.getSelectionModel().isEmpty()) {
-                
+
                 showAlert(AlertType.ERROR, "خطأ", "الرجاء اخيتار عناصر البحث ");
             } else {
-                search(v_search_btn2,v_chombox.getSelectionModel().getSelectedItem());
+                search(v_search_btn2, v_chombox.getSelectionModel().getSelectedItem());
             }
         }
     }
@@ -535,12 +559,18 @@ public class MainFormController implements Initializable {
         d_id_txtf.setText("");
     }
 
-    public void search(Button btnType,String searchCat) throws SQLException {
+    public void search(Button btnType, String searchCat) throws SQLException {
 
         if (btnType == v_search_btn2) {// if the user want to search in volunteers 
-             ObservableList<Volunteers> volunteersList = FXCollections.observableArrayList(volunteers.search(searchCat, v_search_txtf.getText()));
+            ObservableList<Volunteers> volunteersList = FXCollections.observableArrayList(volunteers.search(searchCat, v_search_txtf.getText()));
             volunteer_table.setItems(volunteersList);
-        }
+        } else if (btnType == d_search_btn) {// if the user want to search in dramactic 
+            ObservableList<Dramatists> dramatisticList = FXCollections.observableArrayList(dramisrc.search(searchCat, D_search_txtf.getText()));
+            dramistc_table.setItems(dramatisticList);
+        } else if(btnType == c_search_btn) {// if the user want to search in contracts
+            ObservableList<Contracts> contractsList = FXCollections.observableArrayList(contracts.search(searchCat, C_search_txtf.getText()));
+            contracts_table.setItems(contractsList);
+             }
 
     }
 
@@ -550,6 +580,7 @@ public class MainFormController implements Initializable {
         if (event.getSource() == add_dramistic_btn) {
 
             showPane(add_dramistic_pan);
+            loadData();
 
         } else if (event.getSource() == delete_dramistc_btn) {
 
@@ -632,6 +663,16 @@ public class MainFormController implements Initializable {
 
             clearField();
 
+        } else if (event.getSource() == d_search_btn) {
+            // if the user didn`t select catorgry or the search text
+            if (D_search_txtf.getText().isEmpty() || D_chombox.getSelectionModel().isEmpty()) {
+
+                showAlert(AlertType.ERROR, "خطأ", "الرجاء اخيتار عناصر البحث ");
+            } else {
+                search(d_search_btn, D_chombox.getSelectionModel().getSelectedItem());
+
+            }
+
         }
     }
 
@@ -653,6 +694,22 @@ public class MainFormController implements Initializable {
                 node.setVisible(false);
             }
         }
+    }
+
+    @FXML
+    private void handelContractsBtn(ActionEvent event) throws SQLException {
+        if (event.getSource() == c_search_btn){
+            // if the user didn`t select catorgry or the search text
+            if (C_search_txtf.getText().isEmpty() || C_chombox.getSelectionModel().isEmpty()) {
+
+                showAlert(AlertType.ERROR, "خطأ", "الرجاء اخيتار عناصر البحث ");
+            } else {
+                search(c_search_btn, C_chombox.getSelectionModel().getSelectedItem());
+
+            }
+
+        }
+
     }
 
 }
