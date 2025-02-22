@@ -18,6 +18,15 @@ public class Partners extends Database {
     private String name;
     private String address;
     private String activity_type;
+    private String phone;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public Partners() {
     }
@@ -26,11 +35,12 @@ public class Partners extends Database {
         this.id = id;
     }
 
-    public Partners(Integer id, String name, String address, String activity_type) {
+    public Partners(Integer id, String name, String address, String activity_type,String phone) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.activity_type = activity_type;
+        this.phone=phone;
     }
 
     public Integer getId() {
@@ -78,8 +88,9 @@ public class Partners extends Database {
             Partners partner = new Partners(
                     resultSet.getInt("id"),
                     resultSet.getString("name"),
-                    resultSet.getString("address"),
-                    resultSet.getString("activity_type")
+                    resultSet.getString("addrees"),
+                    resultSet.getString("activity_type"),
+                    resultSet.getString("phone")
             );
             list.add(partner);
         }
@@ -94,11 +105,12 @@ public class Partners extends Database {
     // Method to add a new partner to the database
     public void add() throws SQLException {
         con = getConnection();
-        pre = con.prepareStatement("INSERT INTO `partners`(`name`, `address`, `activity_type`) VALUES (?,?,?)");
+        pre = con.prepareStatement("INSERT INTO `partners`(`name`, `addrees`, `activity_type`,phone) VALUES (?,?,?,?)");
 
         pre.setString(1, name);
         pre.setString(2, address);
         pre.setString(3, activity_type);
+        pre.setString(4, phone);
 
         pre.executeUpdate();
 
@@ -120,12 +132,13 @@ public class Partners extends Database {
     // Method to update a partner in the database
     public void update() throws SQLException {
         con = getConnection();
-        pre = con.prepareStatement("UPDATE `partners` SET `name`=?, `address`=?, `activity_type`=? WHERE id=?");
+        pre = con.prepareStatement("UPDATE `partners` SET `name`=?, `addrees`=?, `activity_type`=?,phone=? WHERE id=?");
 
         pre.setString(1, name);
         pre.setString(2, address);
         pre.setString(3, activity_type);
-        pre.setInt(4, id);
+        pre.setString(4, phone);
+        pre.setInt(5, id);
 
         pre.executeUpdate();
 
@@ -136,9 +149,8 @@ public class Partners extends Database {
     // Method to search for partners based on a category and search text
     public List<Partners> search(String category, String searchText) throws SQLException {
         String column = switch (category) {
-            case "Name" -> "name";
-            case "Address" -> "address";
-            case "Activity Type" -> "activity_type";
+            case "الاسم" -> "name";
+            case "نوع النشاط" -> "activity_type";
             default -> "";
         };
 
@@ -154,8 +166,9 @@ public class Partners extends Database {
             Partners partner = new Partners(
                     resultSet.getInt("id"),
                     resultSet.getString("name"),
-                    resultSet.getString("address"),
-                    resultSet.getString("activity_type")
+                    resultSet.getString("addrees"),
+                    resultSet.getString("activity_type"),
+                    resultSet.getString("phone")
             );
             list.add(partner);
         }

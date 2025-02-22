@@ -244,5 +244,45 @@ public class Volunteers extends Database {
 
         return list;
     }
+    
+    
+    public List<Volunteers> getVoluntByActivity(String ActivityID) throws SQLException {
+     
+//        String sql = "SELECT * FROM `volunteers` WHERE `"+catogry+"` LIKE '%"+txt+"%';";
+        String sql = "SELECT volunteers.id , `name`, `addrees`, `phone`, `account_name`, `account_number`, `proof_identity`, `calss`, `note` "
+                + "FROM `volunteers`JOIN activites_volunteer on activites_volunteer.volunteer = volunteers.id AND activites_volunteer.activites = "+ActivityID+";";
+
+        List<Volunteers> list = new ArrayList<Volunteers>();
+
+        con = getConnection();
+        pre = con.prepareStatement(sql);
+        resultSet = pre.executeQuery();
+
+        while (resultSet.next()) {
+
+            Volunteers volunteer = new Volunteers(resultSet.getInt(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getString(4),
+                    resultSet.getString(5),
+                    resultSet.getString(6),
+                    resultSet.getString(7),
+                    resultSet.getString(8),
+                    resultSet.getString(9)
+            );
+
+            list.add(volunteer);
+        }
+
+        resultSet.close();
+        pre.close();
+        con.close();
+
+        return list;
+    }
+    
+    
+    
+    
 
 }

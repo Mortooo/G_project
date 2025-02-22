@@ -150,10 +150,8 @@ public class Activities extends Database {
     // Method to search for activities based on a category and search text
     public List<Activities> search(String category, String searchText) throws SQLException {
         String column = switch (category) {
-            case "Name" -> "name";
-            case "Donor" -> "donor";
-            case "Notes" -> "notes";
-            case "Location" -> "location";
+            case "الاسم" -> "name";
+            case "المانح" -> "donor";
             default -> "";
         };
 

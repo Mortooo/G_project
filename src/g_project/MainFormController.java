@@ -91,6 +91,8 @@ public class MainFormController implements Initializable {
     Volunteers volunteers = new Volunteers();
     Dramatists dramisrc = new Dramatists();
     Contracts contracts = new Contracts();
+    Partners partners = new Partners();
+    Activities activites = new Activities();
     @FXML
     private TableColumn<?, ?> v_col_proof_identitiy;
     @FXML
@@ -239,6 +241,132 @@ public class MainFormController implements Initializable {
     private Button c_selectDriverID_btn;
     @FXML
     private Button c_selectWitness_btn;
+    @FXML
+    private AnchorPane partners_pan;
+    @FXML
+    private TextField p_search_txtf;
+    @FXML
+    private ComboBox<String> p_chombox;
+    @FXML
+    private TableView<Partners> partners_table;
+    @FXML
+    private TableColumn<?, ?> p_col_id;
+    @FXML
+    private TableColumn<?, ?> p_col_adress;
+    @FXML
+    private Button add_partners_btn;
+    @FXML
+    private Button update_partners_btn;
+    @FXML
+    private Button delete_parrtners_btn;
+    @FXML
+    private AnchorPane add_partners_pan;
+    @FXML
+    private TextField p_phone_txtf;
+    @FXML
+    private TextField p_id_txtf;
+    @FXML
+    private TextField p_name_txtf;
+    @FXML
+    private TextField p_address_txtf;
+    @FXML
+    private Button p_saveU_btn;
+    @FXML
+    private Button p_clear;
+    @FXML
+    private TextField p_activityType_txtf;
+    @FXML
+    private TableColumn<?, ?> p_col_name;
+    @FXML
+    private TableColumn<?, ?> p_col_phone;
+    @FXML
+    private TableColumn<?, ?> p_col_activityType;
+    @FXML
+    private Button p_search_btn;
+    @FXML
+    private Button partners_btn;
+    @FXML
+    private AnchorPane activites_pan;
+    @FXML
+    private TextField a_search_txtf;
+    @FXML
+    private ComboBox<String> a_chombox;
+    @FXML
+    private TableView<Activities> activites_table;
+    @FXML
+    private TableColumn<?, ?> a_col_id;
+    @FXML
+    private TableColumn<?, ?> a_col_name;
+    @FXML
+    private TableColumn<?, ?> a_col_donor;
+    @FXML
+    private TableColumn<?, ?> a_col_notes;
+    @FXML
+    private TableColumn<?, ?> a_col_location;
+    @FXML
+    private Button add_activite_btn;
+    @FXML
+    private Button update_activite_btn;
+    @FXML
+    private Button delete_activite_btn;
+    @FXML
+    private Button a_search_btn;
+    @FXML
+    private AnchorPane add_activite_pan;
+    @FXML
+    private TextField a_location_txtf;
+    @FXML
+    private TextField a_id_txtf;
+    @FXML
+    private TextField a_name_txtf;
+    @FXML
+    private TextField a_donor_txtf;
+    @FXML
+    private Button a_saveU_btn;
+    @FXML
+    private Button a_clear;
+    @FXML
+    private TextArea a_notes_txtA;
+    @FXML
+    private Button activites_btn;
+    @FXML
+    private Button add_volnToActivity_btn;
+    @FXML
+    private Button display_volun_btn;
+    @FXML
+    private AnchorPane Lvolunteers_pan;
+    @FXML
+    private TextField L_search_txtf;
+    @FXML
+    private ComboBox<String> L_chombox;
+    @FXML
+    private TableView<Volunteers> Lvolunteer_table;
+    @FXML
+    private TableColumn<?, ?> L_col_id;
+    @FXML
+    private TableColumn<?, ?> L_col_name;
+    @FXML
+    private TableColumn<?, ?> L_col_adress;
+    @FXML
+    private TableColumn<?, ?> L_col_phone;
+    @FXML
+    private TableColumn<?, ?> L_col_account_number;
+    @FXML
+    private TableColumn<?, ?> L_account_name;
+    @FXML
+    private TableColumn<?, ?> L_col_proof_identitiy;
+    @FXML
+    private TableColumn<?, ?> L_col_class;
+    @FXML
+    private TableColumn<?, ?> L_col_notes;
+    @FXML
+    private Button add_volunActivity_btn;
+    @FXML
+    private Button delete_voluActivity_btn;
+    @FXML
+    private Button L_search_btn;
+    @FXML
+    private Button L_back_btn;
 
     /**
      * Initializes the controller class.
@@ -254,6 +382,7 @@ public class MainFormController implements Initializable {
         restrictNumericInput(v_phone_txtf, 10);
         restrictNumericInput(d_phone_txtf, 10);
         restrictNumericInput(c_phone_txtf, 10);
+        restrictNumericInput(p_phone_txtf, 10);
         restrictNumericInput(v_account_number_txtf, 16);
         restrictNumericInput(d_account_number_txtf, 16);
         loadData();// this method retrieve data from database and insert it into tables
@@ -264,6 +393,10 @@ public class MainFormController implements Initializable {
         v_chombox.getItems().addAll("الملاحظات", "الفئة", "العنوان", "الاسم");
         D_chombox.getItems().addAll("العنوان", "الاسم");
         C_chombox.getItems().addAll("العنوان", "الاسم");
+        p_chombox.getItems().addAll("نوع النشاط", "الاسم");
+        a_chombox.getItems().addAll("المانح", "الاسم");
+        L_chombox.getItems().addAll("الملاحظات", "الفئة", "العنوان", "الاسم");
+
     }
 
     private void initializeTablesColumns() {
@@ -296,6 +429,28 @@ public class MainFormController implements Initializable {
         c_col_driver_id.setCellValueFactory(new PropertyValueFactory<>("driver_ID"));
         c_col_witness.setCellValueFactory(new PropertyValueFactory<>("witnesss_ID"));
         c_col_phone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        // partners table
+        p_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        p_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        p_col_adress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        p_col_activityType.setCellValueFactory(new PropertyValueFactory<>("activity_type"));
+        p_col_phone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        // activities table
+        a_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        a_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        a_col_donor.setCellValueFactory(new PropertyValueFactory<>("donor"));
+        a_col_notes.setCellValueFactory(new PropertyValueFactory<>("notes"));
+        a_col_location.setCellValueFactory(new PropertyValueFactory<>("location"));
+        // volunteer Display by Activity
+        L_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        L_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        L_col_adress.setCellValueFactory(new PropertyValueFactory<>("addrees"));
+        L_col_phone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        L_account_name.setCellValueFactory(new PropertyValueFactory<>("account_name"));
+        L_col_account_number.setCellValueFactory(new PropertyValueFactory<>("account_number"));
+        L_col_proof_identitiy.setCellValueFactory(new PropertyValueFactory<>("proof_identity"));
+        L_col_class.setCellValueFactory(new PropertyValueFactory<>("calss"));
+        L_col_notes.setCellValueFactory(new PropertyValueFactory<>("note"));
 
     }
 
@@ -318,6 +473,12 @@ public class MainFormController implements Initializable {
             // contracts table
             ObservableList<Contracts> contractsList = FXCollections.observableArrayList(contracts.getAll());
             contracts_table.setItems(contractsList);
+            // partners table
+            ObservableList<Partners> partnersList = FXCollections.observableArrayList(partners.getAll());
+            partners_table.setItems(partnersList);
+            // activities table
+            ObservableList<Activities> activitiesList = FXCollections.observableArrayList(activites.getAll());
+            activites_table.setItems(activitiesList);
 
         } catch (SQLException ex) {
             System.out.println(ex.toString());
@@ -327,7 +488,9 @@ public class MainFormController implements Initializable {
 
     @FXML
     private void handel_btns(ActionEvent event) throws IOException, SQLException {
-
+        // disable these btns to prevent erro
+        add_volunActivity_btn.setDisable(true);
+        delete_voluActivity_btn.setDisable(true);
         if (event.getSource().equals(logout_btn)) {// if the user logout 
 
             logout_btn.getScene().getWindow().hide();// hide the main form
@@ -371,10 +534,26 @@ public class MainFormController implements Initializable {
         } else if (event.getSource().equals(dramistic_btn)) {
 
             showPane(Dramsitic_pan);
+            loadData();
+            clearField();
 
         } else if (event.getSource().equals(contracts_btn)) {
+
             showPane(contracts_pan);
             loadData();
+            clearField();
+
+        } else if (event.getSource().equals(partners_btn)) {
+
+            showPane(partners_pan);
+            loadData();
+            clearField();
+
+        } else if (event.getSource().equals(activites_btn)) {
+            showPane(activites_pan);
+            loadData();
+            clearField();
+
         }
 
     }
@@ -546,7 +725,6 @@ public class MainFormController implements Initializable {
             return dramatists;
         } else if (button == c_saveU_btn) {// if the user want to add contract
 
-            System.out.println("press save bottn ");
             if (c_car_owner_name_txtf.getText().isEmpty() || c_address_txtf.getText().isEmpty() || c_phone_txtf.getText().isEmpty()) {
                 showAlert(AlertType.ERROR, "Error", "الرجاء ادخال البيانات ");
                 return null;
@@ -566,6 +744,45 @@ public class MainFormController implements Initializable {
             contract.setDriver_license(c_driver_ID_lable.getText());
 
             return contract;
+
+        } else if (button == p_saveU_btn) {// if the user want to add partners
+
+            if (p_name_txtf.getText().isEmpty() || p_address_txtf.getText().isEmpty() || p_phone_txtf.getText().isEmpty() || p_activityType_txtf.getText().isEmpty()) {
+                showAlert(AlertType.ERROR, "Error", "الرجاء ادخال البيانات ");
+                return null;
+            }
+
+            Partners partner = new Partners();
+            if (!p_id_txtf.getText().isEmpty()) {
+                partner.setId(Integer.parseInt(p_id_txtf.getText()));
+            }
+
+            partner.setName(p_name_txtf.getText());
+            partner.setAddress(p_address_txtf.getText());
+            partner.setPhone(p_phone_txtf.getText());
+            partner.setActivity_type(p_activityType_txtf.getText());
+
+            return partner;
+
+        } else if (button == a_saveU_btn) {
+
+            if (a_name_txtf.getText().isEmpty() || a_donor_txtf.getText().isEmpty() || a_notes_txtA.getText().isEmpty()
+                    || a_location_txtf.getText().isEmpty()) {
+                showAlert(AlertType.ERROR, "Error", "الرجاء ادخال البيانات");
+                return null;
+            }
+
+            Activities activity = new Activities();
+            if (!a_id_txtf.getText().isEmpty()) {
+                activity.setId(Integer.parseInt(a_id_txtf.getText()));
+            }
+
+            activity.setName(a_name_txtf.getText());
+            activity.setDonor(a_donor_txtf.getText());
+            activity.setNotes(a_notes_txtA.getText());
+            activity.setLocation(a_location_txtf.getText());
+
+            return activity;
 
         }
 
@@ -628,6 +845,12 @@ public class MainFormController implements Initializable {
         c_witness_lable.setText("مسار الملف");
         c_phone_txtf.setText("");
         c_driverL_lable.setText("مسار الملف");
+        // clear partners felids
+        p_name_txtf.setText("");
+        p_address_txtf.setText("");
+        p_activityType_txtf.setText("");
+        p_phone_txtf.setText("");
+        p_id_txtf.setText("");
     }
 
     public void search(Button btnType, String searchCat) throws SQLException {
@@ -641,6 +864,12 @@ public class MainFormController implements Initializable {
         } else if (btnType == c_search_btn) {// if the user want to search in contracts
             ObservableList<Contracts> contractsList = FXCollections.observableArrayList(contracts.search(searchCat, C_search_txtf.getText()));
             contracts_table.setItems(contractsList);
+        } else if (btnType == p_search_btn) {// if the user want to search in partners
+            ObservableList<Partners> partnersList = FXCollections.observableArrayList(partners.search(searchCat, p_search_txtf.getText()));
+            partners_table.setItems(partnersList);
+        } else if (btnType == a_search_btn) {
+            ObservableList<Activities> activitesList = FXCollections.observableArrayList(activites.search(searchCat, a_search_txtf.getText()));
+            activites_table.setItems(activitesList);
         }
 
     }
@@ -882,4 +1111,178 @@ public class MainFormController implements Initializable {
 
     }
 
+    @FXML
+    private void handelPartnersBtn(ActionEvent event) throws IOException, SQLException {
+        if (event.getSource() == p_search_btn) {
+            // if the user didn`t select catorgry or the search text
+            if (p_search_txtf.getText().isEmpty() || p_chombox.getSelectionModel().isEmpty()) {
+
+                showAlert(AlertType.ERROR, "خطأ", "الرجاء اختيار عناصر البحث  ");
+            } else {
+                search(p_search_btn, p_chombox.getSelectionModel().getSelectedItem());
+
+            }
+        } else if (event.getSource() == add_partners_btn) {
+            showPane(add_partners_pan);
+
+        } else if (event.getSource() == delete_parrtners_btn) {
+
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+
+            if (partners_table.getSelectionModel().getSelectedItem() == null) {// if the user did select item from the table
+                new Alert(AlertType.ERROR, "الرجاء اختيار عنصر").showAndWait();
+            } else {
+                alert.setContentText("هل تريد حذف المتعاقد؟");
+                alert.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        try {
+                            partners_table.getSelectionModel().getSelectedItem().remove();
+                            loadData();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(MainFormController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                });
+            }
+
+        } else if (event.getSource() == update_partners_btn) {
+            if (partners_table.getSelectionModel().getSelectedItem() == null) {// if the user did select item from the table
+                new Alert(AlertType.ERROR, "الرجاء اختيار عنصر").showAndWait();
+
+            } else {
+                Partners p = partners_table.getSelectionModel().getSelectedItem();
+
+                p_id_txtf.setText(String.valueOf(p.getId()));
+                p_name_txtf.setText(p.getName());
+                p_address_txtf.setText(p.getAddress());
+                p_phone_txtf.setText(p.getPhone());
+                p_activityType_txtf.setText(p.getActivity_type());
+
+                showPane(add_partners_pan);
+
+            }
+
+        } else if (event.getSource() == p_clear) {
+            clearField();
+
+        } else if (event.getSource() == p_saveU_btn) {
+
+            Partners partner = (Partners) getUserInput(p_saveU_btn);
+
+            if (partner != null) {
+                if (partner.getId() == null) {
+                    partner.add();
+                    clearField();
+                    new Alert(AlertType.INFORMATION, "تمت اضافة الشريك بنجاح").showAndWait();
+                } else {
+                    partner.update();
+                    new Alert(AlertType.INFORMATION, "تم تعديل بيانات الشريك بنجاح").showAndWait();
+                    clearField();
+                    showPane(partners_pan);
+                    loadData();
+                    partners_table.refresh();
+                }
+            }
+        }
+    }
+
+    @FXML
+    private void handelActivitesBtn(ActionEvent event) throws SQLException, IOException {
+        if (event.getSource() == a_search_btn) {
+            // if the user didn't select category or the search text
+            if (a_search_txtf.getText().isEmpty() || a_chombox.getSelectionModel().isEmpty()) {
+                showAlert(AlertType.ERROR, "خطأ", "الرجاء اختيار عناصر البحث");
+            } else {
+                search(a_search_btn, a_chombox.getSelectionModel().getSelectedItem());
+            }
+        } else if (event.getSource() == add_activite_btn) {
+            showPane(add_activite_pan);
+        } else if (event.getSource() == delete_activite_btn) {
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            if (activites_table.getSelectionModel().getSelectedItem() == null) {
+                new Alert(AlertType.ERROR, "الرجاء اختيار عنصر").showAndWait();
+            } else {
+                alert.setContentText("هل تريد حذف النشاط؟");
+                alert.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        try {
+                            activites_table.getSelectionModel().getSelectedItem().remove();
+                            loadData();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(MainFormController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                });
+            }
+        } else if (event.getSource() == update_activite_btn) {
+            if (activites_table.getSelectionModel().getSelectedItem() == null) {
+                new Alert(AlertType.ERROR, "الرجاء اختيار عنصر").showAndWait();
+            } else {
+                Activities a = activites_table.getSelectionModel().getSelectedItem();
+                a_id_txtf.setText(String.valueOf(a.getId()));
+                a_name_txtf.setText(a.getName());
+                a_donor_txtf.setText(a.getDonor());
+                a_location_txtf.setText(a.getLocation());
+                a_notes_txtA.setText(a.getNotes());
+                showPane(add_activite_pan);
+            }
+        } else if (event.getSource() == a_clear) {
+            clearActivityFields();
+        } else if (event.getSource() == a_saveU_btn) {
+            Activities activity = (Activities) getUserInput(a_saveU_btn);
+            if (activity != null) {
+                if (activity.getId() == null) {
+                    activity.add();
+                    clearActivityFields();
+                    new Alert(AlertType.INFORMATION, "تمت إضافة النشاط بنجاح").showAndWait();
+                } else {
+                    activity.update();
+                    new Alert(AlertType.INFORMATION, "تم تعديل بيانات النشاط بنجاح").showAndWait();
+                    clearActivityFields();
+                    showPane(activites_pan);
+                    loadData();
+                    activites_table.refresh();
+                }
+            }
+        } else if (event.getSource() == L_back_btn) {
+
+            add_volunActivity_btn.setDisable(true);
+            delete_voluActivity_btn.setDisable(true);
+            showPane(activites_pan);
+
+        } else if (event.getSource() == add_volunActivity_btn) {
+            
+            int activityID = activites_table.getSelectionModel().getSelectedItem().getId();
+
+        } else if (event.getSource() == add_volnToActivity_btn) {// this btn show volunteer pan
+
+            add_volunActivity_btn.setDisable(false);
+            showPane(Lvolunteers_pan);
+
+        } else if (event.getSource() == display_volun_btn) {
+
+            if (activites_table.getSelectionModel().getSelectedItem() == null) {
+
+                showAlert(AlertType.ERROR, "error", "الرجاء اختبار العنصر ");
+
+            } else {
+                Integer activityID = activites_table.getSelectionModel().getSelectedItem().getId();
+                ObservableList<Volunteers> volunteersList = FXCollections.observableArrayList(volunteers.getVoluntByActivity(String.valueOf(activityID)));
+                Lvolunteer_table.setItems(volunteersList);
+                delete_voluActivity_btn.setDisable(false);
+                showPane(Lvolunteers_pan);
+            }
+
+        } else if (event.getSource() == delete_voluActivity_btn) {
+
+        }
+    }
+
+    private void clearActivityFields() {
+        a_id_txtf.setText("");
+        a_name_txtf.setText("");
+        a_donor_txtf.setText("");
+        a_location_txtf.setText("");
+        a_notes_txtA.setText("");
+    }
 }
