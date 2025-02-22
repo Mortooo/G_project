@@ -232,5 +232,27 @@ public class Dramatists extends Database {
         con.close();
 
     }
+    
+       public int getdramistcCount() throws SQLException {
+
+        int count = 0;
+        String sql = "SELECT COUNT(id) AS dramistic_count FROM `dramatists` ;";
+
+        con = getConnection();
+        pre = con.prepareStatement(sql);
+        resultSet = pre.executeQuery();
+
+        if (resultSet.next()) {
+                count = resultSet.getInt("dramistic_count");
+        }
+
+        resultSet.close();
+        pre.close();
+        con.close();
+
+        return count;
+    }
+    
+    
 
 }

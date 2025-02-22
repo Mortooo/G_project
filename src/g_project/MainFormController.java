@@ -21,6 +21,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -367,6 +371,16 @@ public class MainFormController implements Initializable {
     private Button L_search_btn;
     @FXML
     private Button L_back_btn;
+    @FXML
+    private Label activitesCount_lable;
+    @FXML
+    private Label contractsCount_lable;
+    @FXML
+    private Label dramisticsCount_lable;
+    @FXML
+    private Label volunteerCount_lable;
+    @FXML
+    private AreaChart<String, Number> dashboradChart_chart;
 
     /**
      * Initializes the controller class.
@@ -376,7 +390,12 @@ public class MainFormController implements Initializable {
 
         initializeComboBoxs();//add data to chomboxs 
         initializeTablesColumns();//link the tables with their data
-        // i will setup search functianly later 
+        try {
+            initializeDashboard();
+            // i will setup search functianly later 
+        } catch (SQLException ex) {
+            Logger.getLogger(MainFormController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         //restrict the values that accepted to numers 
         restrictNumericInput(v_phone_txtf, 10);
@@ -388,6 +407,39 @@ public class MainFormController implements Initializable {
         loadData();// this method retrieve data from database and insert it into tables
 
     }
+    
+    private void initializeDashboard() throws SQLException{
+        
+       volunteerCount_lable.setText(String.valueOf(volunteers.getVolunteerCount()));
+       activitesCount_lable.setText(String.valueOf(activites.getActivitesCount()));
+       dramisticsCount_lable.setText(String.valueOf(dramisrc.getdramistcCount()));
+       contractsCount_lable.setText(String.valueOf(contracts.getContractsCount()));
+       
+       
+       // Step 1: Define the Axes
+        CategoryAxis xAxis = new CategoryAxis();
+        xAxis.setLabel("X Axis");
+
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("Y Axis");
+
+
+        // Step 3: Create Data Series
+        XYChart.Series<String, Number> series1 = new XYChart.Series<>();
+
+        // Add data points to the series
+        series1.getData().add(new XYChart.Data<>("المعززين", Integer.parseInt(volunteerCount_lable.getText())));
+        series1.getData().add(new XYChart.Data<>("الدراميين", Integer.parseInt(dramisticsCount_lable.getText())));
+        series1.getData().add(new XYChart.Data<>("العقودات", Integer.parseInt(contractsCount_lable.getText())));
+        series1.getData().add(new XYChart.Data<>("النشاطات", Integer.parseInt(activitesCount_lable.getText())));
+      
+
+     
+
+        // Step 4: Add Series to the Chart
+        dashboradChart_chart.getData().add(series1);
+        
+    }
 
     private void initializeComboBoxs() {
         v_chombox.getItems().addAll("الملاحظات", "الفئة", "العنوان", "الاسم");
@@ -395,7 +447,7 @@ public class MainFormController implements Initializable {
         C_chombox.getItems().addAll("العنوان", "الاسم");
         p_chombox.getItems().addAll("نوع النشاط", "الاسم");
         a_chombox.getItems().addAll("المانح", "الاسم");
-        L_chombox.getItems().addAll("الملاحظات", "الفئة", "العنوان", "الاسم");
+        L_chombox.getItems().addAll("الاسم", "الفئة");
 
     }
 
@@ -503,7 +555,7 @@ public class MainFormController implements Initializable {
             stage.show();
 
         } else if (event.getSource().equals(dashboard_btn)) {
-
+            initializeDashboard();
             showPane(dashboard);
 
         } else if (event.getSource().equals(vlounteers_btn)) {
@@ -1251,10 +1303,43 @@ public class MainFormController implements Initializable {
             showPane(activites_pan);
 
         } else if (event.getSource() == add_volunActivity_btn) {
-            
+
             int activityID = activites_table.getSelectionModel().getSelectedItem().getId();
+            int voulnteer = Lvolunteer_table.getSelectionModel().getSelectedItem().getId();
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+
+            if (Lvolunteer_table.getSelectionModel().getSelectedItem() == null) {
+                new Alert(AlertType.ERROR, "الرجاء اختيار عنصر").showAndWait();
+            } else {
+                Activites_Volunteers aV = new Activites_Volunteers();
+                aV.setVolunteer(voulnteer);
+                aV.setActivities(activityID);
+                aV.add();
+                showAlert(AlertType.INFORMATION, "add", "تمت الاضافة نجاح");
+            }
 
         } else if (event.getSource() == add_volnToActivity_btn) {// this btn show volunteer pan
+
+            // at first show list of volunteer they didt add to this activity 
+            Integer activityID = activites_table.getSelectionModel().getSelectedItem().getId();
+            ObservableList<Volunteers> volunteersAList = FXCollections.observableArrayList(volunteers.getVoluntByActivity(String.valueOf(activityID)));
+            ObservableList<Volunteers> volunteersList = FXCollections.observableArrayList(volunteers.getAll());
+            ObservableList<Volunteers> copyList = FXCollections.observableArrayList(volunteersList);// this list of foreach
+
+            for (Volunteers volunteers1 : copyList) {
+
+                for (Volunteers volunteers2 : volunteersAList) {
+
+                    if (volunteers1.getId() == volunteers2.getId()) {
+                        volunteersList.remove(volunteers1);
+                        break;
+                    }
+
+                }
+
+            }
+
+            Lvolunteer_table.setItems(volunteersList);
 
             add_volunActivity_btn.setDisable(false);
             showPane(Lvolunteers_pan);
@@ -1274,6 +1359,60 @@ public class MainFormController implements Initializable {
             }
 
         } else if (event.getSource() == delete_voluActivity_btn) {
+
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            if (Lvolunteer_table.getSelectionModel().getSelectedItem() == null) {
+                new Alert(AlertType.ERROR, "الرجاء اختيار عنصر").showAndWait();
+            } else {
+                alert.setContentText("هل تريد حذف المعزز من النشاط؟");
+                alert.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        try {
+                            int ActivityId = activites_table.getSelectionModel().getSelectedItem().getId();
+                            int voulnteer = Lvolunteer_table.getSelectionModel().getSelectedItem().getId();
+                            Activites_Volunteers aV = new Activites_Volunteers();
+                            aV.setActivities(ActivityId);
+                            aV.setVolunteer(voulnteer);
+                            aV.remove();
+                            ObservableList<Volunteers> volunteersList = FXCollections.observableArrayList(volunteers.getVoluntByActivity(String.valueOf(ActivityId)));
+                            Lvolunteer_table.setItems(volunteersList);
+
+                        } catch (Exception ex) {
+                            Logger.getLogger(MainFormController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                });
+            }
+
+        } else if (event.getSource() == L_search_btn) {
+
+            if (L_search_txtf.getText().isEmpty() || L_chombox.getSelectionModel().isEmpty()) {
+                showAlert(AlertType.ERROR, "خطأ", "الرجاء اختيار عناصر البحث");
+            } else {
+
+                ObservableList<Volunteers> volunteersList = Lvolunteer_table.getItems();
+                ObservableList<Volunteers> copyList = FXCollections.observableArrayList(volunteersList);// this list of foreach
+//                    L_chombox.getItems().addAll("الملاحظات", "الفئة", "العنوان", "الاسم");
+
+                if (L_chombox.getSelectionModel().getSelectedIndex() == 0) {//الاسم
+                    for (Volunteers volunteers1 : copyList) {
+                        if (!volunteers1.getName().contains(L_search_txtf.getText())) {
+                            volunteersList.remove(volunteers1);
+                        }
+                    }
+
+                } else {// الفئة
+                    for (Volunteers volunteers1 : copyList) {
+                        if (!volunteers1.getCalss().contains(L_search_txtf.getText())) {
+                            volunteersList.remove(volunteers1);
+                        }
+                    }
+
+                }
+
+                Lvolunteer_table.setItems(volunteersList);
+
+            }
 
         }
     }

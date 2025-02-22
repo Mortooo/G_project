@@ -180,4 +180,24 @@ public class Activities extends Database {
 
         return list;
     }
+    
+    public int getActivitesCount() throws SQLException {
+
+        int count = 0;
+        String sql = "SELECT COUNT(id) AS Activites_count FROM `activities` ;";
+
+        con = getConnection();
+        pre = con.prepareStatement(sql);
+        resultSet = pre.executeQuery();
+
+        if (resultSet.next()) {
+                count = resultSet.getInt("Activites_count");
+        }
+
+        resultSet.close();
+        pre.close();
+        con.close();
+
+        return count;
+    }
 }

@@ -220,4 +220,24 @@ public class Contracts extends Database {
 
         return list;
     }
+    
+       public int getContractsCount() throws SQLException {
+
+        int count = 0;
+        String sql = "SELECT COUNT(id) AS contracts_count FROM `contracts` ;";
+
+        con = getConnection();
+        pre = con.prepareStatement(sql);
+        resultSet = pre.executeQuery();
+
+        if (resultSet.next()) {
+                count = resultSet.getInt("contracts_count");
+        }
+
+        resultSet.close();
+        pre.close();
+        con.close();
+
+        return count;
+    }
 }

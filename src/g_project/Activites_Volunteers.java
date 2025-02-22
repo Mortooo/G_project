@@ -84,7 +84,7 @@ public class Activites_Volunteers extends Database {
     // Method to add a new activities_volunteer record to the database
     public void add() throws SQLException {
         con = getConnection();
-        pre = con.prepareStatement("INSERT INTO `activities_volunteer`(`activities`, `volunteer`) VALUES (?,?)");
+        pre = con.prepareStatement("INSERT INTO `Activites_Volunteer`(`activites`, `volunteer`) VALUES (?,?)");
 
         pre.setInt(1, activities);
         pre.setInt(2, volunteer);
@@ -98,8 +98,9 @@ public class Activites_Volunteers extends Database {
     // Method to remove an activities_volunteer record from the database
     public void remove() throws SQLException {
         con = getConnection();
-        pre = con.prepareStatement("DELETE FROM `activities_volunteer` WHERE id=?");
-        pre.setInt(1, id);
+        pre = con.prepareStatement("DELETE FROM `Activites_Volunteer` WHERE volunteer=? and  activites=? ;");
+        pre.setInt(1, volunteer);
+        pre.setInt(2, activities);
         pre.executeUpdate();
 
         pre.close();
@@ -109,7 +110,7 @@ public class Activites_Volunteers extends Database {
     // Method to update an activities_volunteer record in the database
     public void update() throws SQLException {
         con = getConnection();
-        pre = con.prepareStatement("UPDATE `activities_volunteer` SET `activities`=?, `volunteer`=? WHERE id=?");
+        pre = con.prepareStatement("UPDATE `Activites_Volunteer` SET `activites`=?, `volunteer`=? WHERE id=?");
 
         pre.setInt(1, activities);
         pre.setInt(2, volunteer);
@@ -129,7 +130,7 @@ public class Activites_Volunteers extends Database {
             default -> "";
         };
 
-        String sql = "SELECT * FROM `activities_volunteer` WHERE `" + column + "` LIKE ?;";
+        String sql = "SELECT * FROM `Activites_Volunteer` WHERE `" + column + "` LIKE ?;";
         List<Activites_Volunteers> list = new ArrayList<>();
 
         con = getConnection();

@@ -202,19 +202,22 @@ public class Volunteers extends Database {
 
     }
 
-    public List<Volunteers> search(String cat,String txt) throws SQLException {
-     
-        String catogry=switch (cat) {
-            case "الاسم" ->"name";
-            case "العنوان"->"addrees";
-            case "الملاحظات"->"note";
-            case "الفئة"->"calss";
-            default ->"";
+    public List<Volunteers> search(String cat, String txt) throws SQLException {
+
+        String catogry = switch (cat) {
+            case "الاسم" ->
+                "name";
+            case "العنوان" ->
+                "addrees";
+            case "الملاحظات" ->
+                "note";
+            case "الفئة" ->
+                "calss";
+            default ->
+                "";
         };
 
-        
-        
-        String sql = "SELECT * FROM `volunteers` WHERE `"+catogry+"` LIKE '%"+txt+"%';";
+        String sql = "SELECT * FROM `volunteers` WHERE `" + catogry + "` LIKE '%" + txt + "%';";
 
         List<Volunteers> list = new ArrayList<Volunteers>();
 
@@ -244,13 +247,12 @@ public class Volunteers extends Database {
 
         return list;
     }
-    
-    
+
     public List<Volunteers> getVoluntByActivity(String ActivityID) throws SQLException {
-     
+
 //        String sql = "SELECT * FROM `volunteers` WHERE `"+catogry+"` LIKE '%"+txt+"%';";
         String sql = "SELECT volunteers.id , `name`, `addrees`, `phone`, `account_name`, `account_number`, `proof_identity`, `calss`, `note` "
-                + "FROM `volunteers`JOIN activites_volunteer on activites_volunteer.volunteer = volunteers.id AND activites_volunteer.activites = "+ActivityID+";";
+                + "FROM `volunteers`JOIN activites_volunteer on activites_volunteer.volunteer = volunteers.id AND activites_volunteer.activites = " + ActivityID + ";";
 
         List<Volunteers> list = new ArrayList<Volunteers>();
 
@@ -280,9 +282,25 @@ public class Volunteers extends Database {
 
         return list;
     }
-    
-    
-    
-    
+
+    public int getVolunteerCount() throws SQLException {
+
+        int count = 0;
+        String sql = "SELECT COUNT(id) AS volunteer_count FROM `volunteers` ;";
+
+        con = getConnection();
+        pre = con.prepareStatement(sql);
+        resultSet = pre.executeQuery();
+
+        if (resultSet.next()) {
+                count = resultSet.getInt("volunteer_count");
+        }
+
+        resultSet.close();
+        pre.close();
+        con.close();
+
+        return count;
+    }
 
 }
